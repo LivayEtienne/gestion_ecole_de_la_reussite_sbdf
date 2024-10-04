@@ -1,39 +1,43 @@
 <?php
+require_once '../Model/Employe.php';
+require_once '../database.php'; // Connection à la base de données
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
-class EmployeController {
-    private $employe;
 
-    public function __construct($employe) {
-        $this->employe = $employe;
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $nom = $_POST['nom'];
+    $prenom = $_POST['prenom'];
+    $email = $_POST['email'];
+    $telephone = $_POST['telephone'];
+    $role = $_POST['role'];
+    $mot_de_passe = $_POST['mot_de_passe'];
+    $salaire_fixe = null;
+    $tarif_horaire = null;
+
+    if ($role === 'enseignant_secondaire') {
+        $tarif_horaire = $_POST['tarif_horaire'];
+    } else {
+        $salaire_fixe = $_POST['salaire_fixe'];
     }
 
-    public function connexion() {
-        // Vérifier si le formulaire de connexion a été soumis
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            // Récupérer les valeurs du formulaire
-            $email = $_POST['email'] ?? '';
-            $motDePasse = $_POST['mot_de_passe'] ?? '';
+    $employeModel = new Employe($pdo);
 
-            // Valider que les champs ne sont pas vides
-            if (!empty($email) && !empty($motDePasse)) {
-                // Appel du modèle Employe pour authentifier l'utilisateur
-                $admin = $this->employe->authentifier($email, $motDePasse);
-
-                if ($admin) {
-                    // Authentification réussie
-                    // Par exemple : démarrer une session et rediriger vers le tableau de bord
-                    session_start();
-                    $_SESSION['admin'] = $admin;
-                    header('Location: Dashboard/dashboard_directeur.php');
-                    exit();
-                } else {
-                    $_SESSION['errorMessage'] = "Email ou mot de passe incorrect.";
-                }
-            } else {
-                $_SESSION['errorMessage'] = "Veuillez entrer votre email et mot de passe.";
-            }
-        }
+    // Vérifier si l'email existe déjà
+    if ($employeModel->verifierEmailExistant($email)) {
+        // Rediriger avec un message d'erreur
+        header("Location: ../View/Employe/employe-new/employe-new.html?error=1&message=Email déjà utilisé");
+        exit();
     }
+    $matricule = $employeModel->genererMatricule($role);
+
+    $employeModel->ajouterEmploye($nom, $prenom, $email, $telephone, $role, $salaire_fixe, $tarif_horaire, $mot_de_passe, $matricule);
+    
+    // Rediriger vers la page avec les informations nécessaires à afficher dans la modale
+    header("Location: ../View/Employe/employe-new/employe-new.html?success=1&nom=$nom&prenom=$prenom&email=$email&role=$role");
+    exit();
 }
+
 
 ?>
