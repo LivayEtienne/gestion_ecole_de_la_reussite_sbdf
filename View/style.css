@@ -1,0 +1,90 @@
+body {
+    background: url('../assets/img1.png') no-repeat center center;
+    background-size: cover;
+    height: 90vh;
+}
+
+.login-container {
+    margin-top: 100px;
+}
+
+.login-form {
+    background: rgba(255, 255, 255, 0.9);
+    padding: 30px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    position: relative;
+    bottom: 150px;
+}
+.form-group{
+    margin: 40px;
+}
+
+.form-control {
+    border-radius: 5px;
+    background-color: #005DED;
+    width: 400px;
+    height: 50px;
+    
+    
+}
+
+.btn-connexion {
+    background-color: #0C1B4F;
+    color: white;
+    border-radius: 50px;
+    padding: 10px 30px;
+    font-family: bold;
+    width: 300px;
+    height: 45px;
+    position: relative;
+    left: 50px;
+   
+}
+.btn-connexion:hover{
+    background-color: rgb(206, 206, 206);
+}
+
+.text-icon {
+    color: #FFD700;
+    font-size: 35px;
+}
+
+.bg-icons {
+  position: relative;
+  bottom: 400px;
+  right: 250px;
+   
+}
+
+.bg-icons1 {
+    position: relative;
+    bottom: 300px;
+    right: 200px;
+     
+  }
+.bg-icons2 {
+    position: relative;
+    bottom: 200px;
+    right: 150px;
+     
+  }
+
+.bg-icons img {
+    height: 100px;
+}
+.logo{
+    width: 300px ;
+    position: relative;
+    bottom: 120px;
+    right: 800px;
+}
+.text{
+    color: #1C3EB5;
+    font-size: 20px;
+   
+}
+#togglePassword{
+    position: relative;
+    top: 800px;
+  
+}
