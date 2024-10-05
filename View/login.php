@@ -1,19 +1,29 @@
 <?php
 session_start();
 $errorMessage = $_SESSION['errorMessage'] ?? ''; // Récupérer le message d'erreur de la session
-
+unset($_SESSION['errorMessage']); // Supprimer le message pour ne pas le réafficher après une actualisation
 
 require_once '../database.php'; 
 require_once '../Model/Employe.php'; 
 require_once '../Controlleur/EmployeController.php'; 
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
 // Créer une instance du modèle Employe
 $employeModel = new Employe($pdo); // $pdo venant du fichier database.php (connexion à la BDD)
 
 $controller = new EmployeController($employeModel);
 
+// Vérifier si le formulaire de connexion est soumis
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $emailOrMatricule = $_POST['email'];
+    $motDePasse = $_POST['mot_de_passe'];
+    
+    // Appeler la méthode de connexion dans le contrôleur
+    $controller->connexion($emailOrMatricule, $motDePasse);
+}
 
-$controller->connexion();
 ?>
 
 <!DOCTYPE html>
@@ -41,24 +51,25 @@ $controller->connexion();
                
                 <form class="login-form" method="POST" action="login.php">
                     <div class="form-group">
-                        <label class="text" for="">Email ou Matricule</label>
+                        <label class="text" for="email">Email ou Matricule</label>
                         <input type="text" class="form-control" name="email" required>
                     </div>
                     <div class="form-group">
-                        <label class="text" for="">Mot de passe</label>
-                        <input type="password" class="form-control" name="mot_de_passe" id="password" required  >
-                     </div>
+                        <label class="text" for="mot_de_passe">Mot de passe</label>
+                        <input type="password" class="form-control" name="mot_de_passe" id="password" required>
+                    </div>
                     <div class="form-group">
-                    <i class="fas fa-eye" id="togglePassword" style="cursor: pointer;  position: absolute; right: 80px; top: 60%; transform: translateY(-70%);"></i>
+                        <i class="fas fa-eye" id="togglePassword" style="cursor: pointer; position: absolute; right: 80px; top: 60%; transform: translateY(-70%);"></i>
                         <button type="submit" class="btn btn-connexion btn-block">Connexion</button>
                     </div>
-
                 </form>
+
+                <!-- Afficher les messages d'erreur -->
                 <div id="errorMessage" class="error-message">
-                <?php if (!empty($errorMessage)): ?>
-                <div class="alert alert-danger"><?= $errorMessage; ?></div>
-                <?php endif; ?>
-            </div>
+                    <?php if (!empty($errorMessage)): ?>
+                        <div class="alert alert-danger"><?= $errorMessage; ?></div>
+                    <?php endif; ?>
+                </div>
             </div>
         </div>
     </div>
