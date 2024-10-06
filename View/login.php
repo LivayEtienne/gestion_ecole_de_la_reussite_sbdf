@@ -11,8 +11,6 @@ require_once '../Controlleur/EmployeController.php';
 $employeModel = new Employe($pdo); // $pdo venant du fichier database.php (connexion à la BDD)
 
 $controller = new EmployeController($employeModel);
-
-
 $controller->connexion();
 ?>
 

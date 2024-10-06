@@ -28,9 +28,22 @@ class Employe {
                 return false;
             }
         } else {
-            // Aucun administrateur trouvé avec cet email
+           
             return false;
         }
     }
+
+    public function comptersurveillants() {
+        // Requête pour compter le nombre de surveillants
+        $sql_surveillants = "SELECT COUNT(*) AS total FROM administrateur WHERE role = 'surveillant'";
+        $stmt = $this->pdo->prepare($sql_surveillants);  // Préparation de la requête
+        $stmt->execute();  // Exécution de la requête
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);  // Récupération du résultat sous forme de tableau associatif
+    
+        // Si le résultat existe, on retourne la valeur 'total', sinon on retourne 0
+        return $result ? $result['total'] : 0;
+    }
+    
+    
 }
 ?>
