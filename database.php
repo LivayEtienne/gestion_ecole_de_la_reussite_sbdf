@@ -2,7 +2,7 @@
 // Configuration de la base de données
 // Configuration de la base de données
 $host = 'localhost';
-$dbname = 'gestion_sabadifa';
+$dbname = 'gestion_sabadifa_ecole';
 $username = 'root';
 $password = '';
 

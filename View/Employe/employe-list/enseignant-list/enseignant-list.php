@@ -1,5 +1,8 @@
 <?php
-require_once '../.././../../database.php'; // Assurez-vous que le chemin est correct
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+require_once '/opt/lampp/htdocs/gestion_ecole_sabadifa/database.php'; // Assurez-vous que le chemin est correct
 
 // Récupération des filtres
 $roleFilter = isset($_POST['role']) ? $_POST['role'] : '';
@@ -45,6 +48,7 @@ if ($archiveFilter !== '') {
     <meta charset="UTF-8">
     <title><?= htmlspecialchars($titre) ?></title>
     <link rel="stylesheet" href="enseignant-list.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
     <h1><?= htmlspecialchars($titre)?></h1>
@@ -55,7 +59,7 @@ if ($archiveFilter !== '') {
         <select name="role" id="role">
             <option value="">Tous</option>
             <option value="surveillant_classe" <?= $roleFilter === 'surveillant_classe' ? 'selected' : '' ?>>surveillant de classe</option>
-            <option value="surveillant_general" <?= $roleFilter === 'surveillant_general' ? 'selected' : '' ?>>surveillant general</option>
+            <option value="surveillant_general" <?= $roleFilter === 'surveillant_general' ? 'selected' : '' ?>>surveillant général</option>
         </select>
 
         <label for="archive">Archivés :</label>
@@ -78,6 +82,7 @@ if ($archiveFilter !== '') {
                 <th>Email</th>
                 <th>Rôle</th>
                 <th>Matricule</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -90,14 +95,35 @@ if ($archiveFilter !== '') {
                         <td><?= htmlspecialchars($admin['email']) ?></td>
                         <td><?= htmlspecialchars($admin['role']) ?></td>
                         <td><?= htmlspecialchars($admin['matricule']) ?></td>
+                        <td>
+                            
+                            <a href="list_employeArchiveView.php" title="Archiver" class="icon-yellow"><i class="fas fa-archive"></i></a>
+                            <a href="modifier.php?id=<?= $admin['matricule'] ?>" title="Modifier" class="icon-blue"><i class="fas fa-edit"></i></a>
+                            <a href="supprimer.php?id=<?= $admin['matricule'] ?>" title="Supprimer" class="icon-red" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet administrateur ?');"><i class="fas fa-trash-alt"></i></a>
+                            
+                        </td>
                     </tr>
                 <?php endforeach; ?>
             <?php else: ?>
                 <tr>
-                    <td colspan="6">Aucun administrateur trouvé.</td>
+                    <td colspan="7">Aucun administrateur trouvé.</td>
                 </tr>
             <?php endif; ?>
         </tbody>
     </table>
+    <div id="overlay"></div>
+
+
+    <!-- Modal de confirmation d'archivage -->
+    <div id="confirmModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <p>Êtes-vous sûr de vouloir archiver cet administrateur ?</p>
+            <button id="confirmArchive" class="button-confirm">Oui</button>
+            <button id="cancelArchive" class="button-cancel">Non</button>
+        </div>
+    </div>
+
+<script src="enseignant-list.js"></script>
 </body>
 </html>

@@ -1,5 +1,10 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 require_once '../database.php'; 
+require_once '/opt/lampp/htdocs/gestion_ecole_sabadifa/Model/emplyeModel_archiver.php';
 
 class EmployeController {
     private $employeModel;
@@ -14,7 +19,7 @@ class EmployeController {
 
         if ($employe && password_verify($motDePasse, $employe['mot_de_passe'])) {
             // Authentification réussie, redirection vers la page d'accueil ou tableau de bord
-            header("Location: ../Dashboard.php");
+            header("Location: ../View/Dashboard/dashboard_directeur.php");
             exit();
         } else {
             // Authentification échouée, enregistrer le message d'erreur dans la session
@@ -43,3 +48,4 @@ class EmployeController {
         exit();
     }
 }
+require_once '/opt/lampp/htdocs/gestion_ecole_sabadifa/View/Employe/employe-list/enseignant-list/enseignant-list.php';
