@@ -1,0 +1,233 @@
+*,
+::before,
+::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Raleway, Helvetica, sans-serif;
+    font-family: Arial, sans-serif; /* Utiliser une police agréable */
+    margin: 20px; /* Ajouter une marge autour du contenu */
+    background-color: #f4f4f4; /* Couleur de fond douce */
+}
+
+h1 {
+    text-align: center; /* Centrer le titre */
+    color: #333; /* Couleur du texte */
+}
+
+table {
+    width: 100%; /* Largeur du tableau */
+    border-collapse: collapse; /* Supprimer les doubles bordures */
+    margin: 20px 0; /* Marges verticales autour du tableau */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Ajoute une ombre pour un effet flottant */
+    border: 2px solid #333; /* Ajouter une bordure au tableau */
+}
+
+th, td {
+    padding: 12px; /* Espacement intérieur des cellules */
+    text-align: left; /* Alignement du texte à gauche */
+    border: 1px solid #333; /* Bordure noire pour chaque cellule */
+}
+
+th {
+    background-color: #002855; /* Fond bleu foncé pour les en-têtes */
+    color: white; /* Texte blanc dans les en-têtes */
+    font-weight: bold; /* Mettre en gras pour les rendre plus visibles */
+}
+
+tr:hover {
+    background-color: #f5f5f5; /* Couleur de fond au survol */
+}
+
+a {
+    color: #4CAF50; /* Couleur des liens */
+    text-decoration: none; /* Pas de soulignement */
+}
+
+a:hover {
+    text-decoration: underline; /* Souligner les liens au survol */
+}
+
+td a {
+    margin-right: 15px; /* Espacement entre les icônes */
+    font-size: 18px; /* Taille des icônes */
+    display: inline-block; /* Pour gérer l'espacement */
+}
+
+td a:hover {
+    color: #333; /* Change la couleur des icônes au survol */
+}
+
+/* Style des icônes individuelles */
+.fa-edit {
+    color: blue; /* Couleur de l'icône Modifier */
+}
+
+.fa-trash-alt {
+    color: red; /* Couleur de l'icône Supprimer */
+}
+
+.fa-archive {
+    color: green; /* Couleur de l'icône Archiver */
+}
+
+.modal-container {
+    position: fixed;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    visibility: hidden; /* Cache par défaut */
+}
+
+.modal-container.active {
+    visibility: visible; /* Affiche quand actif */
+}
+
+#overlay {
+    opacity: 0; /* Par défaut, l'overlay est invisible */
+    position: fixed;
+    top: 0; /* Positionne l'overlay en haut */
+    left: 0; /* Positionne l'overlay à gauche */
+    width: 100%; /* Couvre toute la largeur */
+    height: 100vh; /* Couvre toute la hauteur de la fenêtre */
+    background: rgba(51, 51, 51, 0.83); /* Overlay semi-transparent */
+    transition: opacity 0.4s ease-out; /* Transition pour le fondu */
+    z-index: 1000; /* S'assure que l'overlay est au-dessus de tout autre élément */
+    display: none; /* Masquer par défaut */
+}
+
+#overlay.show {
+    opacity: 1; /* Rendre l'overlay visible */
+    display: block; /* Affiche l'overlay */
+}
+
+.modal {
+    position: fixed; /* Positionner le modal de manière fixe */
+    top: 50%; /* Centrer verticalement */
+    left: 50%; /* Centrer horizontalement */
+    transform: translate(-50%, -50%); /* Ajuster pour centrer parfaitement */
+    background: white; /* Couleur de fond du modal */
+    padding: 20px; /* Espacement à l'intérieur du modal */
+    border-radius: 8px; /* Coins arrondis */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Ombre pour le modal */
+    z-index: 1001; /* S'assurer que le modal est au-dessus de l'overlay */
+    opacity: 0; /* Par défaut, le modal est invisible */
+    transition: opacity 0.4s ease-out; /* Transition pour le fondu */
+    display: none; /* Masquer par défaut */
+}
+
+.modal.show {
+    opacity: 1; /* Rendre le modal visible */
+    display: block; /* Affiche le modal */
+}
+
+
+/* Animation d'ouverture */
+@keyframes modalFadeIn {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -60px);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, 0);
+    }
+}
+
+.button-confirm, .button-cancel {
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.button-confirm:hover, .button-cancel:hover {
+    opacity: 0.8;
+    transform: scale(1.05);
+}
+
+/* Animation de fermeture */
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
+.modal.hide .modal-content {
+    animation: fadeOut 0.6s ease-out;
+}
+
+.close:hover, .close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.button-confirm {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.button-cancel {
+    background-color: #f44336;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.button-confirm:hover, .button-cancel:hover {
+    opacity: 0.8;
+}
+
+button {
+    padding: 10px 20px; /* Ajoute de l'espace à l'intérieur des boutons */
+    background-color: #4CAF50; /* Couleur de fond verte */
+    color: white; /* Couleur du texte */
+    border: none; /* Retire la bordure par défaut */
+    cursor: pointer; /* Change le curseur au survol */
+    font-size: 16px; /* Taille du texte */
+    margin: 10px; /* Espace entre les boutons */
+}
+
+button:hover {
+    background-color: #333; /* Change la couleur de fond au survol */
+}
+
+.search-container {
+    display: flex; /* Utiliser Flexbox */
+    justify-content: center; /* Centrer horizontalement */
+    margin-bottom: 20px; /* Espacement en bas */
+}
+
+.search-box {
+    display: flex; /* Utiliser Flexbox pour le contenu interne */
+    gap: 10px; /* Espacement entre les éléments */
+}
+
+input {
+    padding: 10px; /* Espacement intérieur des champs de saisie */
+    border: 1px solid #ccc; /* Bordure grise */
+    border-radius: 5px; /* Coins arrondis */
+}
+
+button {
+    padding: 10px 20px; /* Ajoute de l'espace à l'intérieur des boutons */
+    background-color: #4CAF50; /* Couleur de fond verte */
+    color: white; /* Couleur du texte */
+    border: none; /* Retire la bordure par défaut */
+    cursor: pointer; /* Change le curseur au survol */
+    font-size: 16px; /* Taille du texte */
+}
+
+button:hover {
+    background-color: #333; /* Change la couleur de fond au survol */
+}
