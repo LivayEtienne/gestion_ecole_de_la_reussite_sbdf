@@ -1,17 +1,14 @@
 <?php
+// Configuration de la base de données
 $host = 'localhost';
-$dbname = 'EcoleReussite';
-$user = 'root';
+$dbname = 'gestion_sabadifa';
+$username = 'root';
 $password = '';
 
+// Connexion à la base de données
 try {
-    $pdo = new PDO("mysql:host=$host;dbname=$dbname", $user, $password);
-    
-    // Configuration pour afficher les erreurs sous forme d'exceptions
+    $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    
-} catch (PDOException $e) {
-    // En cas d'échec de la connexion, affichage d'un message d'erreur
-    echo "Échec de la connexion : " . $e->getMessage();
+} catch(PDOException $e) {
+    die("Erreur de connexion : " . $e->getMessage());
 }
-?>
