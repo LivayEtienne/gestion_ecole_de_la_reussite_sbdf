@@ -26,6 +26,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         header("Location: ../View/Employe/employe-new/employe-new.html?error=1&message=Email déjà utilisé");
         exit();
     }
+
+    // Vérifier si le numero de telephone existe déjà
+    if ($employeModel->verifierTelephoneExistant($telephone)) {
+        // Rediriger avec un message d'erreur
+        header("Location: ../View/Employe/employe-new/employe-new.html?error=1&message=Telephone déjà utilisé");
+        exit();
+    }
     $matricule = $employeModel->genererMatricule($role);
 
     $employeModel->ajouterEmploye($nom, $prenom, $email, $telephone, $role, $salaire_fixe, $tarif_horaire, $mot_de_passe, $matricule);
