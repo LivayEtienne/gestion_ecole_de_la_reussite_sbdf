@@ -3,7 +3,8 @@
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
-require_once '../../../../Model/administrateurModel.php'; // Modifiez ceci pour inclure le bon modèle
+require_once __DIR__ . '../../../../../Model/Surveillant.php'; // Modifiez ceci pour inclure le bon modèle
+require_once '/opt/lampp/htdocs/gestion_ecole_sabadifa/Controlleur/SurveillantController.php';
 
 // Initialisation des variables
 $titre = "Liste des Enseignants"; // Titre de la page
@@ -11,9 +12,9 @@ $administrateurs = []; // Initialiser comme un tableau vide pour éviter les err
 $roleFilter = isset($_POST['role']) ? $_POST['role'] : ''; // Récupérer le filtre de rôle depuis la requête POST
 $archiveFilter = isset($_POST['archive']) ? $_POST['archive'] : ''; // Récupérer le filtre d'archivage depuis la requête POST
 
+$controller = new SurveillantController($pdo);
 // Appeler une fonction pour remplir $administrateurs
-$administrateurs = getAdministrateurs($roleFilter, $archiveFilter); // Correction de l'appel de fonction
-
+$administrateurs = $controller->getAdministrateurs($roleFilter, $archiveFilter);
 // Vérification si la fonction a renvoyé un tableau
 if (!is_array($administrateurs)) {
     $administrateurs = []; // Assurez-vous que c'est un tableau
@@ -66,7 +67,6 @@ if (!is_array($administrateurs)) {
             <?php if (is_array($administrateurs) && count($administrateurs) > 0): ?>
                 <?php foreach ($administrateurs as $admin): ?>
                     <tr>
-                        <td><?= $offset + $index + 1 ?></td> <!-- Affiche le numéro de ligne -->
                         <td><?= htmlspecialchars($admin['nom']) ?></td>
                         <td><?= htmlspecialchars($admin['prenom']) ?></td>
                         <td><?= htmlspecialchars($admin['telephone']) ?></td>
@@ -74,7 +74,9 @@ if (!is_array($administrateurs)) {
                         <td><?= htmlspecialchars($admin['role']) ?></td>
                         <td><?= htmlspecialchars($admin['matricule']) ?></td>
                         <td>
-                            <a href="list_employeArchiveView.php" title="Archiver" class="icon-yellow"><i class="fas fa-archive"></i></a>
+                             <a href="../../../../Controlleur/SurveillantController.php?action=archive&id=<?= $surveillant['id'] ?>" class="btn btn-secondary btn-sm" onclick="return confirm('Êtes-vous sûr de vouloir archiver cet enregistrement ?')">
+                                    <i class="fas fa-archive"></i>
+                                </a>
                             <a href="modifier.php?id=<?= htmlspecialchars($admin['matricule']) ?>" title="Modifier" class="icon-blue"><i class="fas fa-edit"></i></a>
                             <a href="supprimer.php?id=<?= htmlspecialchars($admin['matricule']) ?>" title="Supprimer" class="icon-red" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet administrateur ?');"><i class="fas fa-trash-alt"></i></a>
                         </td>

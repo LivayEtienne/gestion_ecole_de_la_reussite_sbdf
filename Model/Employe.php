@@ -14,7 +14,12 @@ class Employe {
         return $stmt->fetchColumn() > 0;
     }
 
-    // Méthode pour ajouter un employé
+    public function verifierTelephoneExistant($telephone) {
+        $stmt = $this->pdo->prepare("SELECT COUNT(*) FROM administrateur WHERE telephone = ?");
+        $stmt->execute([$telephone]);
+        return $stmt->fetchColumn() > 0;
+    }
+
     public function ajouterEmploye($nom, $prenom, $email, $telephone, $role, $salaire_fixe, $tarif_horaire, $mot_de_passe, $matricule) {
         $sql = "INSERT INTO administrateur (nom, prenom, email, telephone, role, salaire_fixe, tarif_horaire, mot_de_passe, matricule)
                 VALUES (:nom, :prenom, :email, :telephone, :role, :salaire_fixe, :tarif_horaire, :mot_de_passe, :matricule)";
