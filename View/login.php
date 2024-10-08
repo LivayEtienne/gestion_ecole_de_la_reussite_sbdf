@@ -4,8 +4,8 @@ $errorMessage = $_SESSION['errorMessage'] ?? ''; // Récupérer le message d'err
 
 
 require_once '../database.php'; 
-require_once '../Model/Employe.php'; 
-require_once '../Controlleur/EmployeController.php'; 
+require_once '../Model/loginModel.php'; 
+require_once '../Controlleur/loginController.php'; 
 
 // Créer une instance du modèle Employe
 $employeModel = new Employe($pdo); // $pdo venant du fichier database.php (connexion à la BDD)

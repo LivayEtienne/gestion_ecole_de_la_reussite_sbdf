@@ -7,32 +7,33 @@ class Employe {
         $this->pdo = $pdo;
     }
 
-    // Méthode pour vérifier si l'email existe déjà
+
     public function verifierEmailExistant($email) {
         $stmt = $this->pdo->prepare("SELECT COUNT(*) FROM administrateur WHERE email = ?");
         $stmt->execute([$email]);
         return $stmt->fetchColumn() > 0;
     }
 
-    // Méthode pour ajouter un employé
     public function ajouterEmploye($nom, $prenom, $email, $telephone, $role, $salaire_fixe, $tarif_horaire, $mot_de_passe, $matricule) {
         $sql = "INSERT INTO administrateur (nom, prenom, email, telephone, role, salaire_fixe, tarif_horaire, mot_de_passe, matricule)
-                VALUES (:nom, :prenom, :email, :telephone, :role, :salaire_fixe, :tarif_horaire, :mot_de_passe, :matricule)";
-        $stmt = $this->pdo->prepare($sql);
-        $stmt->execute([
-            ':nom' => $nom,
-            ':prenom' => $prenom,
-            ':email' => $email,
-            ':telephone' => $telephone,
-            ':role' => $role,
-            ':salaire_fixe' => $salaire_fixe,
-            ':tarif_horaire' => $tarif_horaire,
-            ':mot_de_passe' => password_hash($mot_de_passe, PASSWORD_DEFAULT),
-            ':matricule' => $matricule
-        ]);
-    }
+        VALUES (:nom, :prenom, :email, :telephone, :role, :salaire_fixe, :tarif_horaire, :mot_de_passe, :matricule)";
+    $stmt = $this->pdo->prepare($sql);
 
-    // Méthode pour générer un matricule
+    $stmt->execute([
+        ':nom' => $nom,
+    ':prenom' => $prenom,
+    ':email' => $email,
+    ':telephone' => $telephone,
+    ':role' => $role,
+    ':salaire_fixe' => !empty($salaire_fixe) ? $salaire_fixe : null,  // Assurez-vous de ne pas passer une chaîne vide
+    ':tarif_horaire' => !empty($tarif_horaire) ? $tarif_horaire : null,  // Idem pour tarif_horaire
+    ':mot_de_passe' => password_hash($mot_de_passe, PASSWORD_DEFAULT),
+    ':matricule' => $matricule
+]);
+}
+
+    
+
     public function genererMatricule($role) {
         $prefix = strtoupper(substr($role, 0, 3));
         $year = date('Y');
@@ -40,13 +41,7 @@ class Employe {
         return $prefix . $year . $randomNumber;
     }
 
-    // Nouvelle méthode pour vérifier les identifiants
-    public function verifierIdentifiants($emailOrMatricule) {
-        $stmt = $this->pdo->prepare("SELECT * FROM administrateur WHERE email = :emailOrMatricule OR matricule = :emailOrMatricule LIMIT 1");
-        $stmt->execute([':emailOrMatricule' => $emailOrMatricule]);
-        return $stmt->fetch(PDO::FETCH_ASSOC);
-    }
-
+    
     public function getEmployes($roleFilter = '', $archiveFilter = '') {
         $sql = "SELECT nom, prenom, telephone, email, role, matricule 
                 FROM administrateur 
@@ -73,4 +68,3 @@ class Employe {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }
-

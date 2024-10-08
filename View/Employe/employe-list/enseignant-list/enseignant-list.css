@@ -1,4 +1,13 @@
+*,
+::before,
+::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
 body {
+    font-family: Raleway, Helvetica, sans-serif;
     font-family: Arial, sans-serif; /* Utiliser une police agréable */
     margin: 20px; /* Ajouter une marge autour du contenu */
     background-color: #f4f4f4; /* Couleur de fond douce */
@@ -45,7 +54,6 @@ a:hover {
 td a {
     margin-right: 15px; /* Espacement entre les icônes */
     font-size: 18px; /* Taille des icônes */
-    color: #4CAF50; /* Couleur des icônes */
     display: inline-block; /* Pour gérer l'espacement */
 }
 
@@ -55,51 +63,129 @@ td a:hover {
 
 /* Style des icônes individuelles */
 .fa-edit {
-    color: #4CAF50; /* Couleur de l'icône Modifier */
+    color: blue; /* Couleur de l'icône Modifier */
 }
 
-.fa-trash {
-    color: #e74c3c; /* Couleur de l'icône Supprimer */
+.fa-trash-alt {
+    color: red; /* Couleur de l'icône Supprimer */
 }
 
-.fa-folder {
-    color: #f39c12; /* Couleur de l'icône Archiver */
+.fa-archive {
+    color: green; /* Couleur de l'icône Archiver */
 }
 
-/* Style du modal */
-.modal {
-    display: none; /* Cachée par défaut */
-    position: fixed; /* Reste en place */
-    z-index: 1; /* Au-dessus de tout */
-    left: 0;
+.modal-container {
+    position: fixed;
     top: 0;
-    width: 100%; /* Largeur complète */
-    height: 100%; /* Hauteur complète */
-    overflow: auto; /* Ajoute une barre de défilement si nécessaire */
-    background-color: rgba(0, 0, 0, 0.4); /* Couleur de fond avec transparence */
+    width: 100vw;
+    height: 100vh;
+    visibility: hidden; /* Cache par défaut */
 }
 
-.modal-content {
-    background-color: #fefefe;
-    margin: 15% auto; /* 15% de l'écran supérieur et centré */
-    padding: 20px;
-    border: 1px solid #888;
-    width: 80%; /* Peut être modifié pour s'adapter à la taille */
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); /* Ajoute une ombre pour un effet de profondeur */
+.modal-container.active {
+    visibility: visible; /* Affiche quand actif */
 }
 
-.close-button {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
+#overlay {
+    opacity: 0; /* Par défaut, l'overlay est invisible */
+    position: fixed;
+    top: 0; /* Positionne l'overlay en haut */
+    left: 0; /* Positionne l'overlay à gauche */
+    width: 100%; /* Couvre toute la largeur */
+    height: 100vh; /* Couvre toute la hauteur de la fenêtre */
+    background: rgba(51, 51, 51, 0.83); /* Overlay semi-transparent */
+    transition: opacity 0.4s ease-out; /* Transition pour le fondu */
+    z-index: 1000; /* S'assure que l'overlay est au-dessus de tout autre élément */
+    display: none; /* Masquer par défaut */
 }
 
-.close-button:hover,
-.close-button:focus {
+#overlay.show {
+    opacity: 1; /* Rendre l'overlay visible */
+    display: block; /* Affiche l'overlay */
+}
+
+.modal {
+    position: fixed; /* Positionner le modal de manière fixe */
+    top: 50%; /* Centrer verticalement */
+    left: 50%; /* Centrer horizontalement */
+    transform: translate(-50%, -50%); /* Ajuster pour centrer parfaitement */
+    background: white; /* Couleur de fond du modal */
+    padding: 20px; /* Espacement à l'intérieur du modal */
+    border-radius: 8px; /* Coins arrondis */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Ombre pour le modal */
+    z-index: 1001; /* S'assurer que le modal est au-dessus de l'overlay */
+    opacity: 0; /* Par défaut, le modal est invisible */
+    transition: opacity 0.4s ease-out; /* Transition pour le fondu */
+    display: none; /* Masquer par défaut */
+}
+
+.modal.show {
+    opacity: 1; /* Rendre le modal visible */
+    display: block; /* Affiche le modal */
+}
+
+
+/* Animation d'ouverture */
+@keyframes modalFadeIn {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -60px);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, 0);
+    }
+}
+
+.button-confirm, .button-cancel {
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.button-confirm:hover, .button-cancel:hover {
+    opacity: 0.8;
+    transform: scale(1.05);
+}
+
+/* Animation de fermeture */
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
+.modal.hide .modal-content {
+    animation: fadeOut 0.6s ease-out;
+}
+
+.close:hover, .close:focus {
     color: black;
     text-decoration: none;
     cursor: pointer;
+}
+
+.button-confirm {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.button-cancel {
+    background-color: #f44336;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.button-confirm:hover, .button-cancel:hover {
+    opacity: 0.8;
 }
 
 button {

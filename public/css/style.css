@@ -1,0 +1,29 @@
+body {
+    background-color: #f8f9fa; /* Couleur de fond claire */
+}
+
+h1 {
+    color: #343a40; /* Couleur du titre */
+    text-align: center;
+    margin-top: 20px;
+}
+
+.table {
+    margin: 20px auto; /* Centrer la table */
+    max-width: 80%; /* Limiter la largeur de la table */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Ajout d'une ombre */
+}
+
+.table th {
+    background-color: #007bff; /* Couleur d'arrière-plan des en-têtes */
+    color: white; /* Couleur du texte des en-têtes */
+}
+
+.btn-primary {
+    margin-bottom: 20px; /* Espacement pour le bouton */
+}
+
+.no-data {
+    text-align: center; /* Centrer le message si aucun surveillant trouvé */
+    color: #6c757d; /* Couleur grise */
+}

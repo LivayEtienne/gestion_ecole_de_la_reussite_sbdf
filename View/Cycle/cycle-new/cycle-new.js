@@ -1,39 +1,18 @@
-document.addEventListener('DOMContentLoaded', function () {
-    const roleSelect = document.getElementById('role');
-    const salaireFixeSection = document.getElementById('salaire_fixe_section');
-    const tarifHoraireSection = document.getElementById('tarif_horaire_section');
+// Ajoute ici tout code JavaScript nécessaire pour améliorer la page, par exemple, validation ou gestion des événements.
+document.addEventListener('DOMContentLoaded', () => {
+    const form = document.querySelector('form');
     const modal = document.getElementById('successModal');
     const successModal = document.getElementById('successModal');
     const errorModal = document.getElementById('errorModal');
     const closeModalElements = document.querySelectorAll('.close');
-    const closeModal = document.querySelector('.close');
-    
-    // Afficher ou masquer les champs salaire fixe ou tarif horaire
-    roleSelect.addEventListener('change', function () {
-        const selectedRole = roleSelect.value;
-        if (selectedRole === 'enseignant_secondaire') {
-            tarifHoraireSection.style.display = 'block';
-            salaireFixeSection.style.display = 'none';
-        } else {
-            tarifHoraireSection.style.display = 'block';
-            salaireFixeSection.style.display = 'none';
-        }
-    });
 
-    // Vérifier si l'URL contient des paramètres de succès
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.get('success') === '1') {
         // Récupérer les informations de l'administrateur ajouté
-        const nom = urlParams.get('nom');
-        const prenom = urlParams.get('prenom');
-        const email = urlParams.get('email');
-        const role = urlParams.get('role');
+        const nom_cycle = urlParams.get('nom_cycle');
         
         // Remplir les champs de la modale avec ces informations
-        document.getElementById('modalNom').textContent = nom;
-        document.getElementById('modalPrenom').textContent = prenom;
-        document.getElementById('modalEmail').textContent = email;
-        document.getElementById('modalRole').textContent = role;
+        document.getElementById('modalnom_cycle').textContent = nom_cycle;
         
         // Afficher la modale
         modal.style.display = 'block';
