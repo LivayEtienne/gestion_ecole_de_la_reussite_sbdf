@@ -42,4 +42,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         header("Location: ../View/Employe/employe-new/employe-new.html?success=1&nom=$nom&prenom=$prenom&email=$email&role=$role");
         exit();
     }
-}
