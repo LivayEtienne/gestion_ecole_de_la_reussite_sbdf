@@ -54,3 +54,23 @@ button:hover {
 #errorMessage {
     color: red;
 }
+
+.position-relative {
+    position: relative;
+}
+
+.position-absolute {
+    position: absolute;
+    right: 10px; /* Ajustez selon vos besoins */
+    top: 50%; /* Centré verticalement */
+    transform: translateY(-50%); /* Centré verticalement */
+    pointer-events: none; /* Pour empêcher les clics sur l'icône */
+}
+
+.fa-eye, .fa-eye-slash {
+    pointer-events: auto; /* Permettre le clic sur l'icône */
+}
+
+.form-label {
+    margin-bottom: 0; /* Supprimer l'espacement en bas des labels */
+}

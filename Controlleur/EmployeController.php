@@ -1,39 +1,39 @@
 <?php
-require_once '../database.php'; 
+require_once '../Model/Employe.php';
+require_once '../database.php'; // Connection à la base de données
 
-class EmployeController {
-    private $employeModel;
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $nom = $_POST['nom'];
+    $prenom = $_POST['prenom'];
+    $email = $_POST['email'];
+    $telephone = $_POST['telephone'];
+    $role = $_POST['role'];
+    $mot_de_passe = $_POST['mot_de_passe'];
+    $salaire_fixe = null;
+    $tarif_horaire = null;
 
-    public function __construct($employeModel) {
-        $this->employeModel = $employeModel;
+    if ($role === 'enseignant_secondaire') {
+        $tarif_horaire = $_POST['tarif_horaire'];
+    } else {
+        $salaire_fixe = $_POST['salaire_fixe'];
     }
 
-    // Gestion de la connexion
-    public function connexion($emailOrMatricule, $motDePasse) {
-        $employe = $this->employeModel->verifierIdentifiants($emailOrMatricule);
+    $employeModel = new Employe($pdo);
 
-        if ($employe && password_verify($motDePasse, $employe['mot_de_passe'])) {
-            // Authentification réussie, redirection vers la page d'accueil ou tableau de bord
-            header("Location: ../Dashboard.php");
-            exit();
-        } else {
-            // Authentification échouée, enregistrer le message d'erreur dans la session
-            $_SESSION['errorMessage'] = "Identifiant ou mot de passe incorrect.";
-            header("Location: login.php");
-            exit();
-        }
+    // Vérifier si l'email existe déjà
+    if ($employeModel->verifierEmailExistant($email)) {
+        // Rediriger avec un message d'erreur
+        header("Location: ../View/Employe/employe-new/employe-new.html?error=1&message=Email déjà utilisé");
+        exit();
     }
 
-    // Gestion de l'inscription
-    public function inscrireEmploye($nom, $prenom, $email, $telephone, $role, $mot_de_passe, $salaire_fixe = null, $tarif_horaire = null) {
-        if ($this->employeModel->verifierEmailExistant($email)) {
-            // Rediriger avec un message d'erreur
-            header("Location: ../View/Employe/employe-new/employe-new.html?error=1&message=Email déjà utilisé");
-            exit();
-        }
-
-        // Générer un matricule
-        $matricule = $this->employeModel->genererMatricule($role);
+    // Vérifier si le numero de telephone existe déjà
+    if ($employeModel->verifierTelephoneExistant($telephone)) {
+        // Rediriger avec un message d'erreur
+        header("Location: ../View/Employe/employe-new/employe-new.html?error=1&message=Telephone déjà utilisé");
+        exit();
+    }
+    $matricule = $employeModel->genererMatricule($role);
 
         // Ajouter l'employé
         $this->employeModel->ajouterEmploye($nom, $prenom, $email, $telephone, $role, $salaire_fixe, $tarif_horaire, $mot_de_passe, $matricule);
