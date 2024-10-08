@@ -1,47 +1,24 @@
 <?php
+// enseignant-list.php
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
-require_once '/opt/lampp/htdocs/gestion_ecole_sabadifa/database.php'; // Assurez-vous que le chemin est correct
+require_once '../../../../Model/administrateurModel.php'; // Modifiez ceci pour inclure le bon modèle
 
-// Récupération des filtres
-$roleFilter = isset($_POST['role']) ? $_POST['role'] : '';
-$archiveFilter = isset($_POST['archive']) ? $_POST['archive'] : '';
+// Initialisation des variables
+$titre = "Liste des Enseignants"; // Titre de la page
+$administrateurs = []; // Initialiser comme un tableau vide pour éviter les erreurs
+$roleFilter = isset($_POST['role']) ? $_POST['role'] : ''; // Récupérer le filtre de rôle depuis la requête POST
+$archiveFilter = isset($_POST['archive']) ? $_POST['archive'] : ''; // Récupérer le filtre d'archivage depuis la requête POST
 
-// Construction de la requête SQL
-$sql = "SELECT nom, prenom, telephone, email, role, matricule FROM administrateur WHERE role IN ('surveillant_classe', 'surveillant_general')";
+// Appeler une fonction pour remplir $administrateurs
+$administrateurs = getAdministrateurs($roleFilter, $archiveFilter); // Correction de l'appel de fonction
 
-// Ajoutez les conditions de filtre
-if (!empty($roleFilter)) {
-    $sql .= " AND role = :role";
-}
-if ($archiveFilter !== '') {
-    $sql .= " AND archive = :archive";
-}
-
-// Préparation et exécution de la requête
-$stmt = $pdo->prepare($sql);
-
-if (!empty($roleFilter)) {
-    $stmt->bindParam(':role', $roleFilter);
-}
-if ($archiveFilter !== '') {
-    $stmt->bindParam(':archive', $archiveFilter, PDO::PARAM_BOOL);
-}
-
-$stmt->execute();
-$administrateurs = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-// Construction du titre
-$titre = "Liste des Surveillants";
-if (!empty($roleFilter)) {
-    $titre .= " " . ($roleFilter === 'surveillant_classe' ? "Classe" : "General");
-}
-if ($archiveFilter !== '') {
-    $titre .= $archiveFilter === '1' ? " Archivés" : " Non Archivés";
+// Vérification si la fonction a renvoyé un tableau
+if (!is_array($administrateurs)) {
+    $administrateurs = []; // Assurez-vous que c'est un tableau
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -51,15 +28,15 @@ if ($archiveFilter !== '') {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
-    <h1><?= htmlspecialchars($titre)?></h1>
+    <h1><?= htmlspecialchars($titre) ?></h1>
 
     <!-- Formulaire de filtre -->
     <form method="POST" action="enseignant-list.php">
         <label for="role">Rôle :</label>
         <select name="role" id="role">
             <option value="">Tous</option>
-            <option value="surveillant_classe" <?= $roleFilter === 'surveillant_classe' ? 'selected' : '' ?>>surveillant de classe</option>
-            <option value="surveillant_general" <?= $roleFilter === 'surveillant_general' ? 'selected' : '' ?>>surveillant général</option>
+            <option value="surveillant_classe" <?= $roleFilter === 'surveillant_classe' ? 'selected' : '' ?>>Surveillant de classe</option>
+            <option value="surveillant_general" <?= $roleFilter === 'surveillant_general' ? 'selected' : '' ?>>Surveillant général</option>
         </select>
 
         <label for="archive">Archivés :</label>
@@ -86,7 +63,7 @@ if ($archiveFilter !== '') {
             </tr>
         </thead>
         <tbody>
-            <?php if (count($administrateurs) > 0): ?>
+            <?php if (is_array($administrateurs) && count($administrateurs) > 0): ?>
                 <?php foreach ($administrateurs as $admin): ?>
                     <tr>
                         <td><?= htmlspecialchars($admin['nom']) ?></td>
@@ -96,11 +73,9 @@ if ($archiveFilter !== '') {
                         <td><?= htmlspecialchars($admin['role']) ?></td>
                         <td><?= htmlspecialchars($admin['matricule']) ?></td>
                         <td>
-                            
                             <a href="list_employeArchiveView.php" title="Archiver" class="icon-yellow"><i class="fas fa-archive"></i></a>
-                            <a href="modifier.php?id=<?= $admin['matricule'] ?>" title="Modifier" class="icon-blue"><i class="fas fa-edit"></i></a>
-                            <a href="supprimer.php?id=<?= $admin['matricule'] ?>" title="Supprimer" class="icon-red" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet administrateur ?');"><i class="fas fa-trash-alt"></i></a>
-                            
+                            <a href="modifier.php?id=<?= htmlspecialchars($admin['matricule']) ?>" title="Modifier" class="icon-blue"><i class="fas fa-edit"></i></a>
+                            <a href="supprimer.php?id=<?= htmlspecialchars($admin['matricule']) ?>" title="Supprimer" class="icon-red" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet administrateur ?');"><i class="fas fa-trash-alt"></i></a>
                         </td>
                     </tr>
                 <?php endforeach; ?>
@@ -113,7 +88,6 @@ if ($archiveFilter !== '') {
     </table>
     <div id="overlay"></div>
 
-
     <!-- Modal de confirmation d'archivage -->
     <div id="confirmModal" class="modal" style="display: none;">
         <div class="modal-content">
@@ -124,6 +98,6 @@ if ($archiveFilter !== '') {
         </div>
     </div>
 
-<script src="enseignant-list.js"></script>
+    <script src="enseignant-list.js"></script>
 </body>
 </html>
