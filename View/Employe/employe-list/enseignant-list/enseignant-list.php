@@ -1,4 +1,5 @@
 <?php
+// enseignant-list.php
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
@@ -42,7 +43,6 @@ if ($archiveFilter !== '') {
     $titre .= $archiveFilter === '1' ? " Archivés" : " Non Archivés";
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -52,15 +52,15 @@ if ($archiveFilter !== '') {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
-    <h1><?= htmlspecialchars($titre)?></h1>
+    <h1><?= htmlspecialchars($titre) ?></h1>
 
     <!-- Formulaire de filtre -->
     <form method="POST" action="enseignant-list.php">
         <label for="role">Rôle :</label>
         <select name="role" id="role">
             <option value="">Tous</option>
-            <option value="surveillant_classe" <?= $roleFilter === 'surveillant_classe' ? 'selected' : '' ?>>surveillant de classe</option>
-            <option value="surveillant_general" <?= $roleFilter === 'surveillant_general' ? 'selected' : '' ?>>surveillant général</option>
+            <option value="surveillant_classe" <?= $roleFilter === 'surveillant_classe' ? 'selected' : '' ?>>Surveillant de classe</option>
+            <option value="surveillant_general" <?= $roleFilter === 'surveillant_general' ? 'selected' : '' ?>>Surveillant général</option>
         </select>
 
         <label for="archive">Archivés :</label>
@@ -87,7 +87,7 @@ if ($archiveFilter !== '') {
             </tr>
         </thead>
         <tbody>
-            <?php if (count($administrateurs) > 0): ?>
+            <?php if (is_array($administrateurs) && count($administrateurs) > 0): ?>
                 <?php foreach ($administrateurs as $admin): ?>
                     <tr>
                         <td><?= htmlspecialchars($admin['nom']) ?></td>
@@ -97,11 +97,9 @@ if ($archiveFilter !== '') {
                         <td><?= htmlspecialchars($admin['role']) ?></td>
                         <td><?= htmlspecialchars($admin['matricule']) ?></td>
                         <td>
-                            
                             <a href="list_employeArchiveView.php" title="Archiver" class="icon-yellow"><i class="fas fa-archive"></i></a>
-                            <a href="modifier.php?id=<?= $admin['matricule'] ?>" title="Modifier" class="icon-blue"><i class="fas fa-edit"></i></a>
-                            <a href="supprimer.php?id=<?= $admin['matricule'] ?>" title="Supprimer" class="icon-red" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet administrateur ?');"><i class="fas fa-trash-alt"></i></a>
-                            
+                            <a href="modifier.php?id=<?= htmlspecialchars($admin['matricule']) ?>" title="Modifier" class="icon-blue"><i class="fas fa-edit"></i></a>
+                            <a href="supprimer.php?id=<?= htmlspecialchars($admin['matricule']) ?>" title="Supprimer" class="icon-red" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet administrateur ?');"><i class="fas fa-trash-alt"></i></a>
                         </td>
                     </tr>
                 <?php endforeach; ?>
@@ -114,7 +112,6 @@ if ($archiveFilter !== '') {
     </table>
     <div id="overlay"></div>
 
-
     <!-- Modal de confirmation d'archivage -->
     <div id="confirmModal" class="modal" style="display: none;">
         <div class="modal-content">
@@ -125,6 +122,6 @@ if ($archiveFilter !== '') {
         </div>
     </div>
 
-<script src="enseignant-list.js"></script>
+    <script src="enseignant-list.js"></script>
 </body>
 </html>
