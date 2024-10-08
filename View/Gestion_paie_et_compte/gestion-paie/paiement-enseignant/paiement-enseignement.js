@@ -2,7 +2,10 @@
 
 document.addEventListener('DOMContentLoaded', function() {
     const payerButtons = document.querySelectorAll('.payer-btn');
+    const moisSelect = document.getElementById('mois-select');
+    const tableBody = document.getElementById('employe-table-body');
 
+    // Gérer le clic sur le bouton "Payer"
     payerButtons.forEach(button => {
         button.addEventListener('click', function() {
             // Changement de couleur et désactivation du bouton
@@ -11,37 +14,31 @@ document.addEventListener('DOMContentLoaded', function() {
             this.textContent = 'Payé';
             this.disabled = true;
 
-            // Récupérer la cellule 'Statut' correspondante dans la même ligne
+            // Mettre à jour le statut en "Payé" avec la couleur verte
             const row = this.closest('tr');
             const statutCell = row.querySelector('.statut span');
-
-            // Mettre à jour le statut en "Payé" avec la couleur verte
             statutCell.classList.remove('bg-danger');
             statutCell.classList.add('bg-success');
             statutCell.textContent = 'Payé';
 
-            // Vous pouvez ajouter ici une requête AJAX pour mettre à jour le statut dans la base de données
+            // Récupérer l'ID de l'employé pour mise à jour via AJAX (optionnel)
             const employeId = this.getAttribute('data-id');
             console.log('Employé payé, ID:', employeId);
+        });
+    });
 
-            // Exemple de requête AJAX (commenté)
-            /*
-            fetch('payer_employe.php', {
-                method: 'POST',
-                body: JSON.stringify({ id: employeId }),
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            }).then(response => {
-                return response.json();
-            }).then(data => {
-                if (data.success) {
-                    console.log('Paiement confirmé pour l\'employé ID:', employeId);
-                } else {
-                    console.error('Erreur lors du paiement.');
-                }
-            });
-            */
+    // Gérer la sélection d'un mois
+    moisSelect.addEventListener('change', function() {
+        const selectedMois = this.value.toLowerCase(); // Récupérer la valeur du mois sélectionné
+        const rows = tableBody.querySelectorAll('tr');
+
+        rows.forEach(row => {
+            const rowMois = row.getAttribute('data-mois');
+            if (rowMois === selectedMois) {
+                row.style.display = ''; // Afficher la ligne si le mois correspond
+            } else {
+                row.style.display = 'none'; // Masquer la ligne sinon
+            }
         });
     });
 });

@@ -80,7 +80,22 @@ $titre = "Liste des Enseignants";
             </div>
         </form>
     </div>
-    <h1 class="text-center mb-4"><?= htmlspecialchars($titre)?></h1>
+    
+    <!-- Menu déroulant pour sélectionner un mois -->
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h1 class="text-center mb-4"><?= htmlspecialchars($titre)?></h1>
+        <select id="mois-select" class="form-select w-auto">
+            <option value="octobre">Octobre</option>
+            <option value="novembre">Novembre</option>
+            <option value="decembre">Décembre</option>
+            <option value="janvier">Janvier</option>
+            <option value="fevrier">Février</option>
+            <option value="mars">Mars</option>
+            <option value="avril">Avril</option>
+            <option value="mai">Mai</option>
+            <option value="juin">Juin</option>
+        </select>
+    </div>
 
     <!-- Tableau d'affichage -->
     <div class="table-responsive">
