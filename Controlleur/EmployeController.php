@@ -5,7 +5,6 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nom = $_POST['nom'];
     $prenom = $_POST['prenom'];
@@ -21,7 +20,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         $salaire_fixe = $_POST['salaire_fixe'];
     }
-    
 
     $employeModel = new Employe($pdo);
 
@@ -32,46 +30,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit();
     }
 
-
-
-    public function deconexion() {
-        if (isset($_GET['action']) && $_GET['action'] == 'logout') {
-            $this->logout();
-        }
-    }
-    // Méthode pour gérer la déconnexion
-    public function logout() {
-        session_start();
-        // Vérifier si une session est active et la détruire
-        if (isset($_SESSION['admin'])) {
-            // Supprimer toutes les variables de session
-            session_unset();
-            // Détruire la session
-            session_destroy();
-        }
-        header('Location: http://localhost:8081/EcoleDeLaReussite/View/login.php'); 
-        exit();
-    }
-
-
-
-    public function compter() {
-        // Récupérer les comptes depuis le modèle
-        $admin = $this->employe->comptersurveillants();
-        
-      
-    }
-
-    
-
     $matricule = $employeModel->genererMatricule($role);
-
     $employeModel->ajouterEmploye($nom, $prenom, $email, $telephone, $role, $salaire_fixe, $tarif_horaire, $mot_de_passe, $matricule);
     
     // Rediriger vers la page avec les informations nécessaires à afficher dans la modale
-    header("Location: ../View/Employe/employe-new/employe-new.html?success=1&nom=$nom&prenom=$prenom&email=$email&role=$role");
+    // header("Location: ../View/Employe/employe-new/employe-new.html?success=1&nom=$nom&prenom=$prenom&email=$email&role=$role");
     exit();
 }
 
-
-?>

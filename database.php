@@ -1,7 +1,7 @@
 <?php
 // Configuration de la base de données
 $host = 'localhost';
-$dbname = 'gestion_sabadifa';
+$dbname = 'EcoleDeLaReussite';
 $username = 'root';
 $password = '';
 
