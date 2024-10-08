@@ -1,5 +1,6 @@
 <?php
-require_once __DIR__ . '/../config/database.php'; // Utilise __DIR__ pour s'assurer que le chemin est correct
+require_once __DIR__ . '/../database.php'; // Chemin correct pour inclure database.php
+// Utilise __DIR__ pour s'assurer que le chemin est correct
 
 class Surveillant {
     private $conn;

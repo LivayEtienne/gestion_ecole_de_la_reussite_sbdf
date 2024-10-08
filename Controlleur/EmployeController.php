@@ -33,35 +33,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
 
-
-    public function deconexion() {
-        if (isset($_GET['action']) && $_GET['action'] == 'logout') {
-            $this->logout();
-        }
-    }
-    // Méthode pour gérer la déconnexion
-    public function logout() {
-        session_start();
-        // Vérifier si une session est active et la détruire
-        if (isset($_SESSION['admin'])) {
-            // Supprimer toutes les variables de session
-            session_unset();
-            // Détruire la session
-            session_destroy();
-        }
-        header('Location: http://localhost:8081/EcoleDeLaReussite/View/login.php'); 
-        exit();
-    }
-
-
-
-    public function compter() {
-        // Récupérer les comptes depuis le modèle
-        $admin = $this->employe->comptersurveillants();
-        
-      
-    }
-
     
 
     $matricule = $employeModel->genererMatricule($role);

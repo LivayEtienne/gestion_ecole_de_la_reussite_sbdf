@@ -6,18 +6,18 @@
     <title>Gestion des Surveillants</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-ptSYY4R6JxrMQGI3N/0Z8t1DTMmnoq13cHoF8b3pY1G+mAhvJ1gyEq2IlKnRFSg3Wpt5l5D/37PbOdq29xR4Xg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <!-- Autres balises de lien ici -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha384-k6RqeWeci5ZR/Lv4MR0sA0FfDOMpGJ4oJ/Cp/+ZlRae/DN46DeQ3Erh98Rrg8gj" crossorigin="anonymous">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/public/style.css">
-
-    
+    <link rel="stylesheet" href="surveillant.css">
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <a class="navbar-brand" href="/">Gestion des Surveillants</a>
     </nav>
     <div class="container mt-4">
-       
+
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>

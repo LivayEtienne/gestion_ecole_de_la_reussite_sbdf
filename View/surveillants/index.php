@@ -4,12 +4,12 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 // Assurez-vous que le modèle est chargé et que vous avez la liste des surveillants
-require_once __DIR__ . '/../../models/Surveillant.php';
+require_once __DIR__ . '/../../Model/Surveillant.php';
 
 $surveillantModel = new Surveillant();
 $surveillants = $surveillantModel->getAll(); // Récupérez les surveillants
 
-require_once '../layout.php'; // ou '../views/layout.php' selon votre structure de dossier
+require_once 'layout.php'; // ou '../views/layout.php' selon votre structure de dossier
 ?>
 
 <div class="container">
