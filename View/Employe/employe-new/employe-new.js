@@ -12,11 +12,11 @@ document.addEventListener('DOMContentLoaded', function () {
     roleSelect.addEventListener('change', function () {
         const selectedRole = roleSelect.value;
         if (selectedRole === 'enseignant_secondaire') {
-            tarifHoraireSection.style.display = 'block';
-            salaireFixeSection.style.display = 'none';
+            tarifHoraireSection.style.display = 'none';
+            salaireFixeSection.style.display = 'block';
         } else {
-            tarifHoraireSection.style.display = 'block';
-            salaireFixeSection.style.display = 'none';
+            tarifHoraireSection.style.display = 'none';
+            salaireFixeSection.style.display = 'block';
         }
     });
 

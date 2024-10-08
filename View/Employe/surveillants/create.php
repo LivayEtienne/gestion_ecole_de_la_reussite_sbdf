@@ -24,4 +24,4 @@
     <button type="submit" class="btn btn-primary mt-3">Ajouter</button>
 </form>
 <?php $content = ob_get_clean(); ?>
-<?php require 'views/layout.php'; ?>
+<?php require '../View/layout.php'; ?>

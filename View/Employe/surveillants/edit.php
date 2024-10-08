@@ -4,9 +4,9 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 // Inclusion du modèle
-require_once __DIR__ . '/../../models/Surveillant.php';
+require_once __DIR__ . '/../../../Model/Surveillant.php';
 
-$surveillantModel = new Surveillant();
+$surveillantModel = new Surveillant($pdo);
 
 // Vérifier si l'ID du surveillant est présent dans l'URL
 if (isset($_GET['id'])) {
@@ -46,7 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 
 // Inclure la mise en page
-require_once '../layout.php'; 
+require_once 'layout.php'; 
 ?>
 
 <div class="container">

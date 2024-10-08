@@ -12,6 +12,22 @@
     line-height: 120%;
     font-family: Open Sans, Helvetica, sans-serif;
   }
+  .sidebar {
+    background-color: #14238A; /* Couleur de fond de la sidebar */
+    height: 1000vh; /* Hauteur de la sidebar égale à la hauteur de la fenêtre */
+}
+
+.text-white {
+    color: #ffffff; /* Couleur du texte en blanc */
+}
+
+.container-fluid {
+    height: 100%; /* Assure que le conteneur prend toute la hauteur */
+}
+
+.table th, .table td {
+    vertical-align: middle; /* Aligne le contenu au centre */
+}
   .dashboard {
     display: grid;
     width: 100%;
@@ -229,7 +245,7 @@
     align-items: center;
     justify-content: flex-start;
     padding: 0 3em;
-    border: 1px solid #ede8f0;
+    border: 1px solid #FFFFFF;
     border-radius: 5px;
   }
   .content-wrap .info-boxes .info-box .box-icon svg {
@@ -321,7 +337,7 @@
     margin-top: 1.25em;
     padding-top: 1.25em;
     width: 100%;
-    border-top: 1px solid #ede8f0;
+    border-top: 1px solid #FFFFFF;
     display: flex;
     align-items: center;
     justify-content: space-between;
