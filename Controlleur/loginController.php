@@ -53,7 +53,7 @@ class EmployeController {
             // Détruire la session
             session_destroy();
         }
-        header('Location: http://localhost:8081/EcoleDeLaReussite/View/login.php'); 
+        header('Location: ../login.php'); 
         exit();
     }
 
