@@ -37,18 +37,18 @@ $controller->connexion();
                     </div>
                 </div>
                
-                <form class="login-form" method="POST" action="login.php">
-                    <div class="form-group">
-                        <label class="text" for="">Email ou Matricule</label>
+                <form class=" login-form" method="POST" action="login.php">
+                    <div class="row form-group">
+                        <label class="col-6" for="">Email ou Matricule</label>
                         <input type="text" class="form-control" name="email" required>
                     </div>
-                    <div class="form-group">
-                        <label class="text" for="">Mot de passe</label>
+                    <div class="row form-group">
+                        <label class="col-6" for="">Mot de passe</label>
                         <input type="password" class="form-control" name="mot_de_passe" id="password" required  >
                      </div>
-                    <div class="form-group">
-                    <i class="fas fa-eye" id="togglePassword" style="cursor: pointer;  position: absolute; right: 80px; top: 60%; transform: translateY(-70%);"></i>
-                        <button type="submit" class="btn btn-connexion btn-block">Connexion</button>
+                    <div class="row form-group">
+                    <i class="col-1  fas fa-eye" id="togglePassword" style="cursor: pointer;  position: absolute; right: 80px; top: 60%; transform: translateY(-70%);"></i>
+                        <button type="submit" class="col-8 btn btn-connexion btn-block">Connexion</button>
                     </div>
 
                 </form>
