@@ -5,8 +5,7 @@
   <title>Dashboard</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
 <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-<link rel="stylesheet" href="../../Dashboard/dashboard.css">
+<link rel="stylesheet" href="./dashboard.css">
 
 </head>
 <body>
@@ -33,7 +32,7 @@
 	<header class="menu-wrap">
 		<figure class="user">
 			<div class="user-avatar">
-				<img src="../../../assets/SABADIFA.png" alt="">
+				<img src="../../assets/SABADIFA.png" alt="">
 			</div>
 		</figure>
 	
@@ -99,119 +98,13 @@
 			</section>
 		</nav>
 	</header>
-
-
-
-
-
-
-
-
-    <main class="content-wrap">
+	
+	<main class="content-wrap">
 		<header class="content-head">
 			<h1>ECOLE DE LA REUSSITE</h1>
-
-
-            
 				
 		</header>
 		
-<section class="container bg-light mt-5">
-    <h2>Ajouter un Administrateur</h2>
-    <form id="form-ajout" action="../../../Controlleur/EmployenewController.php" method="POST">
-        <div class="row g-3 align-items-center">
-            <div class="col-4">
-                <label for="nom" class="form-label">Nom :</label>
-                <input type="text" class="form-control" placeholder="ex: Ndiaye" id="nom" name="nom" required pattern="^[A-Za-zÀ-ÿ]+(?: [A-Za-zÀ-ÿ]+)*$" title="Le nom doit contenir des caractères valides et ne doit pas être uniquement des espaces."><br>
-            </div>
-            <div class="col-4">
-                <label for="prenom" class="form-label">Prénom :</label>
-                <input type="text" class="form-control" placeholder="ex: Matar" id="prenom" name="prenom" required pattern="^[A-Za-zÀ-ÿ]+(?: [A-Za-zÀ-ÿ]+)*$" title="Le prénom doit contenir des caractères valides et ne doit pas être uniquement des espaces."><br>
-            </div>
-            <div class="col-4">
-                <label for="email" class="form-label">Email :</label>
-                <input type="email" class="form-control" placeholder="ex: name@example.com" id="email" name="email" required><br>
-            </div>
-        </div>
-        <div class="row g-4 align-items-center d-flex">
-            <div class="col-4">
-                <label for="telephone" class="form-label">Téléphone :</label>
-                <input type="number" class="form-control" id="telephone" placeholder="ex: 773451842" name="telephone" required oninput="this.value = this.value.replace(/[^0-9]/g, '');" min="750000000" max="789999999">
-            </div>
-            <div class="col-4">
-                <label for="role" class="form-label">Rôle :</label>
-                <select id="role" name="role" required class="form-select" aria-label="Default select example">
-                    <option value="">Choisir un rôle</option>
-                    <option value="directeur">Directeur</option>
-                    <option value="enseignant_primaire">Enseignant Primaire</option>
-                    <option value="enseignant_secondaire">Enseignant Secondaire</option>
-                    <option value="surveillant_classe">Surveillant de Classe</option>
-                    <option value="comptable">Comptable</option>
-                    <option value="surveillant_general">Surveillant Général</option>
-                </select>
-            </div>
-            <div class="col-4" id="salaire_fixe_section">
-                <label for="salaire_fixe">Salaire fixe :</label>
-                <input type="number" class="form-control" id="salaire_fixe" name="salaire_fixe" placeholder="ex: 100.000" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
-            </div>
-            <div class="col-4" id="tarif_horaire_section">
-                <label for="tarif_horaire" class="form-label">Tarif horaire</label>
-                <input type="number" class="form-control" id="tarif_horaire" name="tarif_horaire" placeholder="ex: 6000" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
-            </div>
-        </div>
-        <br>
-
-        <div class="row g-3 align-items-center">
-            <div class="col-3 position-relative">
-                <label for="mot_de_passe" class="form-label">Mot de Passe</label>
-                <input type="password" class="form-control" id="mot_de_passe" name="mot_de_passe" required>
-                <span id="togglePassword" class="position-absolute" style="right: 15px; top: 55%; cursor: pointer;">
-                    <i class="fas fa-eye"></i> <!-- Icône œil, assurez-vous d'inclure Font Awesome -->
-                </span>
-            </div>
-            <div class="col-3">
-                <label for="confirm_mot_de_passe" class="form-label">Confirmer le Mot de Passe</label>
-                <input type="password" class="form-control" id="confirm_mot_de_passe" required>
-            </div>
-        </div>
-        
-        
-        <br>
-        <div class="row g-3 align-items-center">
-            <div class="col-3" class="col-form-label">
-                <button type="submit" class="btn btn-primary">Ajouter</button>
-            </div>
-
-            <div class="col-3" class="col-form-label">
-                <button type="button" class="btn btn-danger">Annuler</button>
-            </div>
-        </div>
-    </form>
-
-    <!-- Modale de succès -->
-    <div id="successModal" class="modal" style="display: none;">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <h3>Administrateur ajouté avec succès !</h3>
-            <p><strong>Nom :</strong> <span id="modalNom"></span></p>
-            <p><strong>Prénom :</strong> <span id="modalPrenom"></span></p>
-            <p><strong>Email :</strong> <span id="modalEmail"></span></p>
-            <p><strong>Rôle :</strong> <span id="modalRole"></span></p>
-        </div>
-    </div>
-
-    <!-- Modale d'erreur -->
-    <div id="errorModal" class="modal" style="display: none;">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <h3>Erreur lors de l'ajout !</h3>
-            <p id="errorMessage"></p>
-        </div>
-    </div>
-</section>
-
-<script src="employe-new.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 		
 	</main>
 </div>

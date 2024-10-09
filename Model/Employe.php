@@ -7,7 +7,7 @@ class Employe {
         $this->pdo = $pdo;
     }
 
-    // Méthode pour vérifier si l'email existe déjà
+
     public function verifierEmailExistant($email) {
         $stmt = $this->pdo->prepare("SELECT COUNT(*) FROM administrateur WHERE email = ?");
         $stmt->execute([$email]);
@@ -37,7 +37,6 @@ class Employe {
         ]);
     }
 
-    // Méthode pour générer un matricule
     public function genererMatricule($role) {
         $prefix = strtoupper(substr($role, 0, 3));
         $year = date('Y');
@@ -45,13 +44,7 @@ class Employe {
         return $prefix . $year . $randomNumber;
     }
 
-    // Nouvelle méthode pour vérifier les identifiants
-    public function verifierIdentifiants($emailOrMatricule) {
-        $stmt = $this->pdo->prepare("SELECT * FROM administrateur WHERE email = :emailOrMatricule OR matricule = :emailOrMatricule LIMIT 1");
-        $stmt->execute([':emailOrMatricule' => $emailOrMatricule]);
-        return $stmt->fetch(PDO::FETCH_ASSOC);
-    }
-
+    
     public function getEmployes($roleFilter = '', $archiveFilter = '') {
         $sql = "SELECT nom, prenom, telephone, email, role, matricule 
                 FROM administrateur 
@@ -78,4 +71,3 @@ class Employe {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }
-

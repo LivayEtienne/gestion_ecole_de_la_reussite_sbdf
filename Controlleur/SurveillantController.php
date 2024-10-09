@@ -45,8 +45,11 @@ class SurveillantController {
         require '/../View/Employe/surveillants/edit.php';
     }
     
-    // Récupérer tous les surveillants actifs
-    public function getAll() {
+    // Récupérer tous les surveillants actifs ou rechercher par terme
+    public function getAll($term = null) {
+        if ($term) {
+            return $this->search($term);
+        }
         return $this->model->getAll();
     }
 
@@ -84,6 +87,19 @@ class SurveillantController {
         $surveillantsArchives = $this->model->getArchived();
         require '../View/Employe/surveillants/archived.php';
     }
+
+    // Recherche des surveillants par un terme
+    public function search($term) {
+        $stmt = $this->pdo->prepare("
+            SELECT * FROM administrateur 
+            WHERE matricule LIKE :term 
+            OR nom LIKE :term 
+            OR prenom LIKE :term 
+            OR email LIKE :term
+        ");
+        $stmt->execute(['term' => '%' . $term . '%']);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
 
 // Gérer les actions basées sur les requêtes
@@ -101,6 +117,9 @@ if (isset($_GET['action'])) {
         $controller->unarchive($id);
     } elseif ($_GET['action'] === 'showArchived') {
         $controller->showArchived();
+    } elseif ($_GET['action'] === 'search' && isset($_GET['term'])) {
+        $term = trim($_GET['term']);
+        $surveillants = $controller->getAll($term);
+        require '../View/Employe/surveillants/index.php'; // Assurez-vous de bien rediriger vers la bonne vue
     }
 }
-?>
