@@ -419,6 +419,81 @@
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"></script>
 
             <!-- Script JavaScript pour gérer les modals et la soumission du formulaire -->
+            <script>
+            // Classe pour gérer les Modals
+           // Classe pour gérer les Modals
+class ModalManager {
+    constructor(paymentModalId, confirmationModalId, bulletinModalId) {
+        this.paymentModal = new bootstrap.Modal(document.getElementById(paymentModalId));
+        this.confirmationModal = new bootstrap.Modal(document.getElementById(confirmationModalId));
+        this.bulletinModal = new bootstrap.Modal(document.getElementById(bulletinModalId));
+    }
+
+    // Méthode pour gérer la validation du formulaire et l'affichage du modal de confirmation
+    handlePaymentSubmit(event) {
+        event.preventDefault();
+        if (!this.validateForm()) {
+            return;
+        }
+        this.confirmationModal.show();
+    }
+
+    // Méthode pour confirmer le paiement et afficher le bulletin
+    confirmPayment() {
+        const professeurId = document.getElementById('professeurId').value;
+        const nom = document.getElementById('nom').value;
+        const telephone = document.getElementById('telephone').value;
+
+        // Simuler le succès du paiement (vous pouvez remplacer par une requête AJAX)
+        console.log('Paiement confirmé pour:', professeurId, nom, telephone);
+
+        // Fermer les modals de paiement et de confirmation
+        this.paymentModal.hide();
+        this.confirmationModal.hide();
+
+        // Afficher le bulletin de salaire après confirmation
+        this.bulletinModal.show();
+    }
+
+    // Méthode pour valider le formulaire de paiement
+    validateForm() {
+        const nom = document.getElementById('nom').value;
+        const telephone = document.getElementById('telephone').value;
+        const phoneError = document.getElementById('phoneError');
+
+        phoneError.style.display = 'none';
+
+        if (nom.trim() === '') {
+            alert('Veuillez entrer votre nom.');
+            return false;
+        }
+
+        const phoneRegex = /^(77|76|75|78)\d{7}$/;
+        if (!phoneRegex.test(telephone)) {
+            phoneError.style.display = 'block';
+            return false;
+        }
+        return true;
+    }
+}
+
+// Initialisation de la gestion des modals
+document.addEventListener('DOMContentLoaded', function () {
+    const modalManager = new ModalManager('paymentModal', 'confirmationModal', 'bulletinModal');
+
+    // Gérer la soumission du formulaire de paiement
+    document.getElementById('paymentForm').addEventListener('submit', (event) => {
+        modalManager.handlePaymentSubmit(event);
+    });
+
+    // Gérer la confirmation du paiement
+    document.getElementById('confirmPaymentButton').addEventListener('click', () => {
+        modalManager.confirmPayment();
+    });
+});
+
+
+            </script>
                     </main>                  
                         <!-- partial -->
                         <script src="/../script.js"></script>
