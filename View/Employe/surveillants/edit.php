@@ -22,53 +22,79 @@ if (isset($_GET['id'])) {
     exit;
 }
 
+// Initialiser les messages d'erreur
+$errorMessage = '';
+
+// Traitement du formulaire
 // Traitement du formulaire
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Récupérer les données du formulaire
     $matricule = $_POST['matricule'];
-    $nom = $_POST['nom'];
-    $prenom = $_POST['prenom'];
-    $email = $_POST['email'];
+    $nom = trim($_POST['nom']);
+    $prenom = trim($_POST['prenom']);
+    $email = trim($_POST['email']);
 
-    // Mise à jour du surveillant
-    $surveillantModel->update($id, [
-        'matricule' => $matricule,
-        'nom' => $nom,
-        'prenom' => $prenom,
-        'email' => $email
-    ]);
+    // Validation des champs
+    if (empty($nom) || empty($prenom) || empty($email)) {
+        $errorMessage = "Tous les champs sont requis.";
+    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $errorMessage = "L'email est invalide.";
+    } else {
+        // Vérifier si l'email existe déjà (sauf si c'est la même que l'email actuel)
+        $existingSurveillant = $surveillantModel->getByEmail($email);
+        if ($existingSurveillant && $existingSurveillant['id'] != $id) {
+            $errorMessage = "L'email est déjà utilisé par un autre surveillant.";
+        } else {
+            // Mise à jour du surveillant
+            $surveillantModel->update($id, [
+                'matricule' => $matricule,
+                'nom' => $nom,
+                'prenom' => $prenom,
+                'email' => $email
+            ]);
 
-    // Debug : Vérifiez si le code atteint cette ligne
-    echo "Mise à jour réussie. Redirection...";
-    header("Location: index.php"); // Rediriger vers la liste des surveillants
-    exit;
+            // Redirection après succès
+            header("Location: index.php"); // Rediriger vers la liste des surveillants
+            exit;
+        }
+    }
 }
-
 
 // Inclure la mise en page
 require_once 'layout.php'; 
 ?>
 
-<div class="container">
-    <h1>Modifier Surveillant</h1>
-    <form method="post">
-        <div class="form-group">
-            <label for="matricule">Matricule</label>
-            <input type="text" name="matricule" id="matricule" class="form-control" value="<?= htmlspecialchars($surveillant['matricule']) ?>" required>
+<div class="container mt-5">
+    <h1 class="text-center mb-4">Modifier Surveillant</h1>
+    
+    <?php if ($errorMessage): ?>
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <?= htmlspecialchars($errorMessage) ?>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
         </div>
+    <?php endif; ?>
+
+    <form method="post" class="bg-light p-4 rounded shadow-sm">
+        <input type="hidden" name="matricule" id="matricule" value="<?= htmlspecialchars($surveillant['matricule']) ?>">
+
         <div class="form-group">
             <label for="nom">Nom</label>
             <input type="text" name="nom" id="nom" class="form-control" value="<?= htmlspecialchars($surveillant['nom']) ?>" required>
         </div>
+        
         <div class="form-group">
             <label for="prenom">Prénom</label>
             <input type="text" name="prenom" id="prenom" class="form-control" value="<?= htmlspecialchars($surveillant['prenom']) ?>" required>
         </div>
+        
         <div class="form-group">
             <label for="email">Email</label>
             <input type="email" name="email" id="email" class="form-control" value="<?= htmlspecialchars($surveillant['email']) ?>" required>
         </div>
-        <button type="submit" class="btn btn-primary">Mettre à jour</button>
-        <a href="index.php" class="btn btn-secondary">Annuler</a>
+        
+        <button type="submit" class="btn btn-primary btn-block">Mettre à jour</button>
+        <a href="index.php" class="btn btn-secondary btn-block">Annuler</a>
     </form>
 </div>

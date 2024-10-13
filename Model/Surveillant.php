@@ -65,10 +65,24 @@ class Surveillant {
         }
     }
 
-    // Modifier un surveillant
     public function update($id, $data) {
         if (is_array($data)) {
+            // Validation de l'email
+            if (!$this->validateEmail($data['email'])) {
+                return "L'email fourni n'est pas valide.";
+            }
+    
             try {
+                // Vérifier si l'email existe déjà pour un autre surveillant
+                $stmt = $this->pdo->prepare("SELECT COUNT(*) FROM administrateur WHERE email = :email AND id != :id");
+                $stmt->execute(['email' => $data['email'], 'id' => $id]);
+                $count = $stmt->fetchColumn();
+    
+                if ($count > 0) {
+                    return "L'email est déjà utilisé par un autre surveillant.";
+                }
+    
+                // Mise à jour du surveillant
                 $stmt = $this->pdo->prepare("UPDATE administrateur SET matricule = :matricule, nom = :nom, prenom = :prenom, email = :email WHERE id = :id");
                 $stmt->bindParam(':id', $id);
                 $stmt->bindParam(':matricule', $data['matricule']);
@@ -76,14 +90,17 @@ class Surveillant {
                 $stmt->bindParam(':prenom', $data['prenom']);
                 $stmt->bindParam(':email', $data['email']);
                 $stmt->execute();
+    
+                return true; // Indique que la mise à jour a réussi
             } catch (PDOException $e) {
-                throw new Exception("Erreur lors de la mise à jour du surveillant : " . $e->getMessage());
+                return "Erreur lors de la mise à jour du surveillant : " . $e->getMessage();
             }
         } else {
-            throw new InvalidArgumentException("Les données de mise à jour doivent être un tableau.");
+            return "Les données de mise à jour doivent être un tableau.";
         }
     }
-
+    
+    
     // Supprimer un surveillant
     public function delete($id) {
         try {
@@ -94,12 +111,20 @@ class Surveillant {
             throw new Exception("Erreur lors de la suppression du surveillant : " . $e->getMessage());
         }
     }
+
+    // Méthode pour valider un email
     public function validateEmail($email) {
-        $pattern = '/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}$/';
-        if (!preg_match($pattern, $email)) {
-            return false;
-        }
-        return true;
+        $pattern = '/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/';
+        return preg_match($pattern, $email) === 1;
     }
+
+    public function getByEmail($email) {
+        $pdo = $this->pdo; // assuming you have a pdo property in your model
+        $stmt = $pdo->prepare("SELECT * FROM administrateur WHERE email = :email ");
+        $stmt->execute(['email' => $email]);
+        $result = $stmt->fetch();
+        return $result;
+    }
+    
 }
 ?>
