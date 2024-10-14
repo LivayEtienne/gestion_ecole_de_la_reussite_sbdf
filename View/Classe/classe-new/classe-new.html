@@ -1,0 +1,43 @@
+<?php
+require_once '../../Controlleur/ClasseController.php'; // Chemin correct vers le contrôleur
+
+$controller = new ClasseController($pdo);  // Passer la connexion PDO
+$cycles = $controller->getCycles();        // Récupérer les cycles
+?>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Créer une nouvelle classe</title>
+    <link rel="stylesheet" href="classe-new.css">
+</head>
+<body>
+    <h1>Créer une nouvelle classe</h1>
+    <form action="../../../Controlleur/ClasseController.php" method="POST">
+        <label for="nom_classe">Nom de la classe :</label>
+        <input type="text" id="nom_classe" name="nom_classe" required><br>
+
+        <label for="id_cycle">Cycle :</label>
+        <select id="id_cycle" name="id_cycle" required>
+            <option value="">Sélectionner un cycle</option>
+            <?php if (!empty($cycles)): ?>
+                <?php foreach ($cycles as $cycle): ?>
+                    <option value="<?= htmlspecialchars($cycle['id']); ?>"><?= htmlspecialchars($cycle['nom_cycle']); ?></option>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <option value="">Aucun cycle disponible</option>
+            <?php endif; ?>
+        </select><br>
+
+        <label for="seuil_max">Seuil maximum :</label>
+        <input type="number" id="seuil_max" name="seuil_max" value="25"><br>
+
+        <label for="is_annexe">Annexe :</label>
+        <input type="checkbox" id="is_annexe" name="is_annexe"><br>
+
+        <button type="submit">Créer la classe</button>
+    </form>
+    <script src="classe-new.js"></script>
+</body>
+</html>

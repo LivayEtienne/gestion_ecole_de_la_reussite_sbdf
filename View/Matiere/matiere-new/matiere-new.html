@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="matiere-new.css">
+    <title>Ajouter une Matiere</title>
+</head>
+<body>
+    <h1>Ajouter une Matiere</h1>
+    <form action="../../../Controlleur/MatiereController.php" method="POST">
+        <label for="nom_matiere">Nom de la matiere :</label>
+        <input type="text" id="nom_matiere" name="nom_matiere" required>
+        <button type="submit">Ajouter</button>
+    </form>
+
+    <div id="successModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3>Matiere ajoutée avec succès !</h3>
+            <p><strong>Nom :</strong> <span id="modalnom_matiere"></span></p>
+        </div>
+    </div>
+
+    <!-- Modale d'erreur -->
+    <div id="errorModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3>Erreur lors de l'ajout !</h3>
+            <p id="errorMessage"></p>
+        </div>
+    </div>
+    <script src="matiere-new.js"></script>
+</body>
+</html>

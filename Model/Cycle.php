@@ -18,7 +18,6 @@ class Cycle {
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute([
             ':nom_cycle' => $nom_cycle,
-
         ]);
     }
 }
