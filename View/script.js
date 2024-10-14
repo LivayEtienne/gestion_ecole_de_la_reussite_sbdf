@@ -1,5 +1,3 @@
-
-//la barre de recherche par nom ou par matricule liste surveillant
 document.getElementById('searchButton').addEventListener('click', function() {
     var searchInput = document.getElementById('searchInput').value;
     var tableRows = document.getElementById('surveillantTableBody').rows;

@@ -1,20 +1,18 @@
 <?php
-// Activer le mode de débogage pour voir les erreurs (à enlever en production)
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
+ini_set('display_errors', 1);
 
 // Inclusion des fichiers nécessaires
 require_once __DIR__ . '/../database.php'; // Connexion à la base de données
-require_once __DIR__ . '/../Model/payementProfesseurmodel.php'; // Assurez-vous que le chemin est correct
+require_once __DIR__ . '/../Model/payementProfesseurmodel.php'; // Chemin correct vers le modèle
 
 class PaymentProfController {
     private $model;
     private $pdo;
 
     public function __construct($pdo) {
-        $this->pdo = $pdo; // Récupérer la connexion PDO
-        $this->model = new Surveillant($this->pdo); // Passer la connexion PDO à Surveillant
+        $this->pdo = $pdo;
+        $this->model = new Surveillant($this->pdo);
     }
 
     // Récupérer tous les professeurs secondaires actifs
@@ -22,57 +20,45 @@ class PaymentProfController {
         return $this->model->getAll();
     }
 
-    // Vérifier un contact
-    public function verifyContact($nom, $numero) {
-        $contact = $this->model->verifyContact($nom, $numero);
-        if ($contact) {
-            return [
-                'success' => true,
-                'data' => $contact
-            ];
-        } else {
-            return [
-                'success' => false,
-                'message' => 'Contact non trouvé.'
-            ];
-        }
-    }
-
-    // Traitement des requêtes (exemple)
     public function handleRequest() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            // Vérification d'un contact
-            if (isset($_POST['action']) && $_POST['action'] === 'verifyContact') {
-                $nom = $_POST['nom'];
-                $numero = $_POST['numero'];
-                return $this->verifyContact($nom, $numero);
-            }
-
-            // Traitement d'un paiement
-            if (isset($_POST['action']) && $_POST['action'] === 'processPayment') {
-                $professeurId = $_POST['professeurId'];
-                $montant = $_POST['montant'];
-                return $this->processPayment($professeurId, $montant);
+            // Vérifier l'action
+            if (isset($_POST['action']) && $_POST['action'] === 'confirmPayment') {
+                $professeurId = $_POST['professeurId'] ?? null; // ID du professeur
+                if (!$professeurId) {
+                    header('Content-Type: application/json');
+                    echo json_encode(['success' => false, 'message' => 'ID du professeur manquant.']);
+                    exit;
+                }
+                return $this->updatePaymentStatus($professeurId);
             }
         }
         
-        // Pour une requête GET, par exemple, récupérer tous les professeurs
+        // Pour une requête GET, récupérer tous les professeurs
         return $this->getAll();
     }
-   public function updatePaymentStatus(Request $request) {
-    // Récupérer l'ID du professeur depuis le formulaire
-    $professeurId = $request->input('professeurId');
+    
 
-    // Appeler la méthode pour mettre à jour le statut de paiement
-    $updateResult = $this->model->updatePaymentStatus($professeurId);
-
-    if ($updateResult['success']) {
-        // Redirection en cas de succès avec un indicateur pour afficher le bulletin
-        return redirect()->back()->with('success', 'Le statut de paiement a été mis à jour avec succès.')->with('showBulletin', true);
-    } else {
-        // Redirection en cas d'échec
-        return redirect()->back()->with('error', $updateResult['message']);
+    public function updatePaymentStatus($professeurId) {
+        // Préparer une requête pour mettre à jour le statut du paiement
+        $query = "UPDATE paiements SET payment_status = :status WHERE professeur_id = :id";
+        $stmt = $this->pdo->prepare($query);
+        
+        // Vous pouvez définir le statut comme nécessaire, par exemple 'paid'
+        $status = 'paid';
+        $stmt->bindParam(':status', $status);
+        $stmt->bindParam(':id', $professeurId);
+        
+        if ($stmt->execute()) {
+            return ['success' => true, 'message' => 'Statut de paiement mis à jour avec succès.'];
+        } else {
+            return ['success' => false, 'message' => 'Échec de la mise à jour du statut de paiement.'];
+        }
     }
 }
-}
+
+
+// Initialisation du contrôleur et traitement de la requête
+$controller = new PaymentProfController($pdo);
+$controller->handleRequest();
 ?>

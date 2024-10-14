@@ -214,199 +214,78 @@
     </div>
 </div>
 
-                        <!-- Tableau des surveillants -->
-                        <div class="table-responsive">
-                            <table class="table table-striped mt-3 text-dark">
-                                <thead class="bg-primary text-white">
-                                    <tr>
-                                        <th>Matricule</th>
-                                        <th>Nom</th>
-                                        <th>Prénom</th>
-                                        <th>Nom Classe</th>
-                                        <th>Status</th>
-                                        <th>Nombre Heure</th>
-                                        <th>Tarif Horaire</th>
-                                        <th>Montant Total</th>
-                                        <th>Date Paiement</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="surveillantTableBody">
-                                    <?php if ($surveillants && count($surveillants) > 0): ?>
-                                        <?php foreach ($surveillants as $surveillant): ?>
-                                            <tr>
-                                                <td><?= isset($surveillant['matricule']) ? htmlspecialchars($surveillant['matricule']) : '' ?></td>
-                                                <td><?= isset($surveillant['nom_enseignant']) ? htmlspecialchars($surveillant['nom_enseignant']) : '' ?></td>
-                                                <td><?= isset($surveillant['prenom_enseignant']) ? htmlspecialchars($surveillant['prenom_enseignant']) : '' ?></td>
-                                                <td><?= isset($surveillant['nom_classe']) ? htmlspecialchars($surveillant['nom_classe']) : '' ?></td>
-                                                <td class="<?= $surveillant['status'] == 'Payé' ? 'text-success' : 'text-danger' ?>">
-                                                    <?= htmlspecialchars($surveillant['status']) ?>
-                                                </td>
-                                                <td><?= isset($surveillant['nombre_heure']) ? htmlspecialchars($surveillant['nombre_heure']) : '' ?></td>
-                                                <td><?= isset($surveillant['tarif_horaire']) ? htmlspecialchars($surveillant['tarif_horaire']) : '' ?></td>
-                                                <td><?= isset($surveillant['montant_total']) ? htmlspecialchars($surveillant['montant_total']) : '' ?></td>
-                                                <td><?= isset($surveillant['date_paiement']) && $surveillant['date_paiement'] !== null ? htmlspecialchars($surveillant['date_paiement']) : 'Non payé' ?></td>
-                                                <td>
-                                                    <button 
-                                                        class="btn btn-success btn-sm <?= $surveillant['status'] == 'Payé' ? 'disabled' : '' ?>" 
-                                                        data-bs-toggle="modal" 
-                                                        data-bs-target="#paymentOptionsModal" 
-                                                        data-id='<?= $surveillant['id'] ?>'
-                                                        data-nom='<?= htmlspecialchars($surveillant['nom_enseignant']) ?>'
-                                                        data-prenom='<?= htmlspecialchars($surveillant['prenom_enseignant']) ?>'>
-                                                        Payer
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                        <?php endforeach; ?>
-                                    <?php else: ?>
-                                        <tr>
-                                            <td colspan="10">Aucun professeur trouvé.</td>
-                                        </tr>
-                                    <?php endif; ?>
-                                </tbody>
-                            </table>
-                        </div>
+                      <!-- Tableau des surveillants -->
+<div class="table-responsive">
+    <table class="table table-striped mt-3 text-dark">
+        <thead class="bg-primary text-white">
+            <tr>
+                <th>Matricule</th>
+                <th>Nom</th>
+                <th>Prénom</th>
+                <th>Nom Classe</th>
+                <th>Status</th>
+                <th>Nombre Heure</th>
+                <th>Tarif Horaire</th>
+                <th>Montant Total</th>
+                <th>Date Paiement</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="surveillantTableBody">
+            <?php if ($surveillants && count($surveillants) > 0): ?>
+                <?php foreach ($surveillants as $surveillant): ?>
+                    <tr>
+                        <td><?= isset($surveillant['matricule']) ? htmlspecialchars($surveillant['matricule']) : '' ?></td>
+                        <td><?= isset($surveillant['nom_enseignant']) ? htmlspecialchars($surveillant['nom_enseignant']) : '' ?></td>
+                        <td><?= isset($surveillant['prenom_enseignant']) ? htmlspecialchars($surveillant['prenom_enseignant']) : '' ?></td>
+                        <td><?= isset($surveillant['nom_classe']) ? htmlspecialchars($surveillant['nom_classe']) : '' ?></td>
+                        <td class="<?= $surveillant['status'] == 'Payé' ? 'text-success' : 'text-danger' ?>">
+                            <?= htmlspecialchars($surveillant['status']) ?>
+                        </td>
+                        <td><?= isset($surveillant['nombre_heure']) ? htmlspecialchars($surveillant['nombre_heure']) : '' ?></td>
+                        <td><?= isset($surveillant['tarif_horaire']) ? htmlspecialchars($surveillant['tarif_horaire']) : '' ?></td>
+                        <td><?= isset($surveillant['montant_total']) ? htmlspecialchars($surveillant['montant_total']) : '' ?></td>
+                        <td><?= isset($surveillant['date_paiement']) && $surveillant['date_paiement'] !== null ? htmlspecialchars($surveillant['date_paiement']) : 'Non payé' ?></td>
+                        <td>
+                            <button 
+                                class="btn btn-success btn-sm <?= $surveillant['status'] == 'Payé' ? 'disabled' : '' ?>" 
+                                data-bs-toggle="modal" 
+                                data-bs-target="#paymentOptionsModal" 
+                                data-id='<?= $surveillant['id'] ?>'
+                                data-nom='<?= htmlspecialchars($surveillant['nom_enseignant']) ?>'
+                                data-prenom='<?= htmlspecialchars($surveillant['prenom_enseignant']) ?>'>
+                                Payer
+                            </button>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <tr>
+                    <td colspan="10">Aucun professeur trouvé.</td>
+                </tr>
+            <?php endif; ?>
+        </tbody>
+    </table>
+</div>
 
-
-                           <!-- Modal de Choix de Paiement -->
-                            <div class="modal fade" id="paymentOptionsModal" tabindex="-1" aria-labelledby="paymentOptionsModalLabel" aria-hidden="true">
-                                <div class="modal-dialog modal-lg modal-dialog-scrollable">
-                                    <div class="modal-content rounded" style="border-radius: 20px;">
-                                        <div class="modal-header bg-light">
-                                            <h5 class="modal-title" id="paymentOptionsModalLabel"><strong>Choisissez un Mode de Paiement</strong></h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                        </div>
-                                        <div class="modal-body py-4">
-                                            <div class="d-flex justify-content-around">
-                                                <div class="text-center" data-bs-toggle="modal" data-bs-target="#paymentModal" data-mode="Orange Money" data-img-src="om.png">
-                                                    <img src="../../assets/om.png" alt="Orange Money" class="img-fluid rounded" style="width: 120px; height: 120px;">
-                                                    <p>Paiement par OrangeMoney</p>
-                                                </div>
-                                                <div class="text-center" data-bs-toggle="modal" data-bs-target="#paymentModal" data-mode="Paiement en Espèce" data-img-src="paiement-espece.png">
-                                                    <img src="../../assets/paiement-espece.png" alt="Paiement en Espèce" class="img-fluid rounded" style="width: 120px; height: 120px;">
-                                                    <p>Paiement par Espèce</p>
-                                                </div>
-                                                <div class="text-center" data-bs-toggle="modal" data-bs-target="#paymentModal" data-mode="Wave" data-img-src="wave.png">
-                                                    <img src="../../assets/wave.png" alt="Wave" class="img-fluid rounded" style="width: 120px; height: 120px;">
-                                                    <p>Paiement par Wave</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                          <!-- Modal de Paiement -->
-                        <div class="modal fade" id="paymentModal" tabindex="-1" aria-labelledby="paymentModalLabel" aria-hidden="true">
-                            <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
-                                <div class="modal-content rounded" style="border-radius: 20px;">
-                                    <div class="modal-body py-4">
-                                        <div class="row">
-                                            <!-- Section avec le dégradé et image dynamique -->
-                                            <div class="col-md-8 d-flex align-items-center justify-content-center" style="background: linear-gradient(to right, #facc15, #ec4899, #3b82f6); border-radius: 20px 0 0 20px; padding: 20px;">
-                                                <div>
-                                                    <h2 class="modal-title text-dark" id="paymentOperatorName"><strong>Informations de Paiement</strong></h2>
-                                                    <img id="paymentOperatorImage" src="" alt="Logo Opérateur" class="img-fluid mt-3" style="width: 100px; height: 100px;">
-                                                </div>
-                                            </div>
-                                            <!-- Section du formulaire -->
-                                            <div class="col-md-4">
-                                                <form id="paymentForm" onsubmit="return handlePaymentSubmit(event)">
-                                                    <input type="hidden" id="professeurId" name="professeurId" value="">
-                                                    <div class="mb-3">
-                                                        <label for="nom" class="form-label">Nom</label>
-                                                        <input type="text" class="form-control" id="nom" name="nom" placeholder="Entrez votre nom" required>
-                                                    </div>
-                                                    <div class="mb-3">
-                                                        <label for="telephone" class="form-label">Numéro de Téléphone</label>
-                                                        <input type="tel" class="form-control" id="telephone" name="telephone" placeholder="77XXXXXXX" required pattern="77[0-9]{7}|76[0-9]{7}|75[0-9]{7}|78[0-9]{7}">
-                                                        <div class="invalid-feedback" id="phoneError" style="display: none;">Veuillez entrer un numéro valide (format: 77xxxxxx, 76xxxxxx, 75xxxxxx, 78xxxxxx).</div>
-                                                    </div>
-                                                    <button type="submit" class="btn btn-primary">Confirmer le Paiement</button>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                            <!-- Modal de Confirmation -->
-                <div class="modal fade" id="confirmationModal" tabindex="-1" aria-labelledby="confirmationModalLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-lg modal-dialog-centered">
-                        <div class="modal-content rounded" style="border-radius: 20px;">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="confirmationModalLabel">Confirmation du Paiement</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <p>Vous êtes sur le point de confirmer le paiement pour <span id="confirmNomPrenom"></span>.</p>
-                                
-                                <!-- Formulaire pour soumettre la confirmation du paiement -->
-                                <form action="../../Controlleur/paymentProfesseurController.php" method="POST">
-                                    <!-- Ajoutez un champ caché pour l'ID du professeur -->
-                                    <input type="hidden" name="professeurId" id="professeurId" value="">
-                                    
-                                    <!-- Bouton de confirmation -->
-                                    <button type="button" id="confirmPaymentButton" class="btn btn-success">Confirmer</button>                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-           <!-- Modal Bulletin de Salaire -->
-<div class="modal fade" id="bulletinModal" tabindex="-1" aria-labelledby="bulletinModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered">
-        <div class="modal-content rounded-lg border border-gray-300 shadow-lg">
-            <div class="modal-header bg-blue-700 text-white">
-                <h5 class="modal-title" id="bulletinModalLabel">Bulletin de Paie</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+<!-- Modal de Choix de Paiement -->
+<div class="modal fade" id="paymentOptionsModal" tabindex="-1" aria-labelledby="paymentOptionsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content rounded" style="border-radius: 20px;">
+            <div class="modal-header bg-light">
+                <h5 class="modal-title" id="paymentOptionsModalLabel"><strong>Choisissez un Mode de Paiement</strong></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
-                <div class="container">
-                    <div class="d-flex justify-content-between align-items-center mb-4">
-                        <img alt="Logo of Ecole de la Reussite" class="img-fluid" height="80" src="../../assets/SABADIFA.png" width="80"/>
-                        <div class="text-end">
-                            <p class="mb-1">Année scolaire : 2024/2025</p>
-                            <p>Date : 02/10/2023</p>
-                        </div>
+            <div class="modal-body py-4">
+                <div class="d-flex justify-content-around">
+                    <div class="text-center" data-bs-toggle="modal" data-bs-target="#paymentModal" data-mode="Orange Money" data-img-src="om.png">
+                        <img src="../../assets/om.png" alt="Orange Money" class="img-fluid rounded" style="width: 120px; height: 120px;">
                     </div>
-                    <div class="text-center mb-4">
-                        <h1 class="h2 font-weight-bold text-primary">ECOLE DE LA REUSSITE</h1>
-                        <p>114 RUE BOURGUIBA, DAKAR SENEGAL</p>
-                        <p>TEL : 77 145 12 17 / 76 147 12 15</p>
-                        <p>Email: ecoledelareussite@gmail.com</p>
+                    <div class="text-center" data-bs-toggle="modal" data-bs-target="#paymentModal" data-mode="Paiement en Espèce" data-img-src="paiement-espece.png">
+                        <img src="../../assets/paiement-espece.png" alt="Paiement en Espèce" class="img-fluid rounded" style="width: 120px; height: 120px;">
                     </div>
-                    <h2 class="text-center h4 font-weight-bold mb-4">BULLETIN DE PAIE</h2>
-                    <div class="row border-top border-bottom py-3 mb-4">
-                        <div class="col-md-4">
-                            <h3 class="font-weight-bold">Employeur</h3>
-                            <p>Nom : <span id="nomEmployeur"></span></p>
-                            <p>Prénom : <span id="prenomEmployeur"></span></p>
-                            <p>Numéro : <span id="numeroEmployeur"></span></p>
-                        </div>
-                        <div class="col-md-4">
-                            <h3 class="font-weight-bold">Salarié</h3>
-                            <p>Nom : <span id="nomSalarié"></span></p>
-                            <p>Prénom : <span id="prenomSalarié"></span></p>
-                            <p>Numéro : <span id="numeroSalarié"></span></p>
-                            <p>Matricule : <span id="matriculeSalarié"></span></p>
-                        </div>
-                        <div class="col-md-4">
-                            <h3 class="font-weight-bold">Période</h3>
-                            <p>Début contrat : <span id="debutContrat"></span></p>
-                            <p>Fin contrat : <span id="finContrat"></span></p>
-                            <p>Ancienneté : <span id="ancienneté"></span></p>
-                        </div>
-                    </div>
-                    <div class="mb-4">
-                        <p>Salaire brut : <span id="salaireBrut"></span> francs</p>
-                        <p>Taxes : <span id="taxes"></span>%</p>
-                        <p class="font-weight-bold">Salaire net : <span id="salaireNet"></span> francs</p>
-                    </div>
-                    <div class="d-flex justify-content-end mt-4">
-                        <img alt="Signature of the Director" class="img-fluid" height="80" src="https://storage.googleapis.com/a1aa/image/fLW7BfovGVu3SUU57GOe2KgLTYWVqlkfVVxm9IwFwfgVtXtcC.jpg" width="80"/>
+                    <div class="text-center" data-bs-toggle="modal" data-bs-target="#paymentModal" data-mode="Wave" data-img-src="wave.png">
+                        <img src="../../assets/wave.png" alt="Wave" class="img-fluid rounded" style="width: 120px; height: 120px;">
                     </div>
                 </div>
             </div>
@@ -414,89 +293,242 @@
     </div>
 </div>
 
-          <!--   Inclure Bootstrap JS et Popper.js -->
-            <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
-            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"></script>
+<!-- Modal de Paiement -->
+<div class="modal fade" id="paymentModal" tabindex="-1" aria-labelledby="paymentModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content rounded" style="border-radius: 20px;">
+            <div class="modal-body py-4">
+                <div class="row">
+                    <!-- Section avec le dégradé et image dynamique -->
+                    <div class="col-md-8 d-flex align-items-center justify-content-center" style="background: linear-gradient(to right, #facc15, #ec4899, #3b82f6); border-radius: 20px 0 0 20px; padding: 20px;">
+                        <div>
+                            <h2 class="modal-title text-dark" id="paymentOperatorName"><strong>Informations de Paiement</strong></h2>
+                            <img id="paymentOperatorImage" src="../../assets/SABADIFA.png" alt="Logo Opérateur" class="img-fluid mt-3" style="width: 100px; height: 100px;">
+                        </div>
+                    </div>
+                    <!-- Section du formulaire -->
+                    <div class="col-md-4">
+                        <form id="paymentForm" onsubmit="return handlePaymentSubmit(event)">
+                            <input type="hidden" id="professeurId" name="professeurId" value="">
+                            <div class="mb-3">
+                                <label for="nom" class="form-label">Nom</label>
+                                <input type="text" class="form-control" id="nom" name="nom" placeholder="Entrez votre nom" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="telephone" class="form-label">Numéro de Téléphone</label>
+                                <input type="tel" class="form-control" id="telephone" name="telephone" placeholder="77XXXXXXX" required pattern="77[0-9]{7}|76[0-9]{7}|75[0-9]{7}|78[0-9]{7}">
+                                <div class="invalid-feedback" id="phoneError" style="display: none;">Veuillez entrer un numéro valide (format: 77xxxxxx, 76xxxxxx, 75xxxxxx, 78xxxxxx).</div>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Confirmer le Paiement</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
+            <!-- Modal de Confirmation -->
+            <div class="modal fade" id="confirmationModal" tabindex="-1" aria-labelledby="confirmationModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg modal-dialog-centered">
+                    <div class="modal-content rounded" style="border-radius: 20px;">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="confirmationModalLabel">Confirmation du Paiement</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <p>Vous êtes sur le point de confirmer le paiement pour <span id="confirmNomPrenom"></span>.</p>
+                            <button id="confirmPaymentButton" class="btn btn-success" onclick="confirmPayment()">Confirmer</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Modal Bulletin de Salaire -->
+            <div class="modal fade" id="bulletinModal" tabindex="-1" aria-labelledby="bulletinModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg modal-dialog-centered">
+                    <div class="modal-content rounded-lg border border-gray-300 shadow-lg">
+                        <div class="modal-header bg-blue-700 text-white">
+                            <h5 class="modal-title" id="bulletinModalLabel">Bulletin de Paie</h5>
+                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="container">
+                                <div class="d-flex justify-content-between align-items-center mb-4">
+                                    <img alt="Logo of Ecole de la Reussite" class="img-fluid" height="80" src="SABADIFA.png" width="80"/>
+                                    <div class="text-end">
+                                        <p class="mb-1">Année scolaire : 2024/2025</p>
+                                        <p>Date : 02/10/2023</p>
+                                    </div>
+                                </div>
+                                <div class="text-center mb-4">
+                                    <h1 class="h2 font-weight-bold text-primary">ECOLE DE LA REUSSITE</h1>
+                                    <p>114 RUE BOURGUIBA, DAKAR SENEGAL</p>
+                                    <p>TEL : 77 145 12 17 / 76 147 12 15</p>
+                                    <p>Email: ecoledelareussite@gmail.com</p>
+                                </div>
+                                <h2 class="text-center h4 font-weight-bold mb-4">BULLETIN DE PAIE</h2>
+                                <div class="row border-top border-bottom py-3 mb-4">
+                                    <div class="col-md-4">
+                                        <h3 class="font-weight-bold">Employeur</h3>
+                                        <p>Nom :</p>
+                                        <p>Prénom :</p>
+                                        <p>Numéro :</p>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <h3 class="font-weight-bold">Salarié</h3>
+                                        <p>Nom :</p>
+                                        <p>Prénom :</p>
+                                        <p>Numéro :</p>
+                                        <p>Matricule :</p>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <h3 class="font-weight-bold">Période</h3>
+                                        <p>Début contrat :</p>
+                                        <p>Fin contrat :</p>
+                                        <p>Ancienneté :</p>
+                                    </div>
+                                </div>
+                                <div class="mb-4">
+                                    <p>Salaire brut : 200,000 francs</p>
+                                    <p>Taxes : 25%</p>
+                                    <p class="font-weight-bold">Salaire net : 175,000 francs</p>
+                                </div>
+                                <div class="d-flex justify-content-end mt-4">
+                                    <img alt="Signature of the Director" class="img-fluid" height="80" src="" width="80"/>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+
+          
             <!-- Script JavaScript pour gérer les modals et la soumission du formulaire -->
             <script>
             // Classe pour gérer les Modals
-           // Classe pour gérer les Modals
-class ModalManager {
-    constructor(paymentModalId, confirmationModalId, bulletinModalId) {
-        this.paymentModal = new bootstrap.Modal(document.getElementById(paymentModalId));
-        this.confirmationModal = new bootstrap.Modal(document.getElementById(confirmationModalId));
-        this.bulletinModal = new bootstrap.Modal(document.getElementById(bulletinModalId));
+            class ModalManager {
+                constructor(paymentModalId, confirmationModalId, bulletinModalId) {
+                    this.paymentModal = new bootstrap.Modal(document.getElementById(paymentModalId));
+                    this.confirmationModal = new bootstrap.Modal(document.getElementById(confirmationModalId));
+                    this.bulletinModal = new bootstrap.Modal(document.getElementById(bulletinModalId));
+                }
+
+                // Méthode pour gérer la validation du formulaire et l'affichage du modal de confirmation
+                handlePaymentSubmit(event) {
+                    event.preventDefault();
+                    if (!this.validateForm()) {
+                        return;
+                    }
+                    this.confirmationModal.show();
+                }
+
+                // Méthode pour confirmer le paiement et afficher le bulletin
+                confirmPayment() {
+                    const professeurId = document.getElementById('professeurId').value;
+                    const nom = document.getElementById('nom').value;
+                    const telephone = document.getElementById('telephone').value;
+
+                    // Simuler le succès du paiement (vous pouvez remplacer par une requête AJAX)
+                    console.log('Paiement confirmé pour:', professeurId, nom, telephone);
+
+                    // Fermer les modals de paiement et de confirmation
+                    this.paymentModal.hide();
+                    this.confirmationModal.hide();
+
+                    // Afficher le bulletin de salaire après confirmation
+                    this.bulletinModal.show();
+                    
+                }
+
+                // Méthode pour valider le formulaire de paiement
+                validateForm() {
+                    const nom = document.getElementById('nom').value;
+                    const telephone = document.getElementById('telephone').value;
+                    const phoneError = document.getElementById('phoneError');
+
+                    phoneError.style.display = 'none';
+
+                    if (nom.trim() === '') {
+                        alert('Veuillez entrer votre nom.');
+                        return false;
+                    }
+
+                    const phoneRegex = /^(77|76|75|78)\d{7}$/;
+                    if (!phoneRegex.test(telephone)) {
+                        phoneError.style.display = 'block';
+                        return false;
+                    }
+                    return true;
+                }
+            }
+
+            // Initialisation de la gestion des modals
+            document.addEventListener('DOMContentLoaded', function () {
+                const modalManager = new ModalManager('paymentModal', 'confirmationModal', 'bulletinModal');
+
+                // Gérer la soumission du formulaire de paiement
+                document.getElementById('paymentForm').addEventListener('submit', (event) => {
+                    modalManager.handlePaymentSubmit(event);
+                });
+
+                // Gérer la confirmation du paiement et afficher le bulletin
+                document.getElementById('confirmPaymentButton').addEventListener('click', () => {
+                    modalManager.confirmPayment();
+                });
+            });
+
+// Fonction pour capturer les données du surveillant lors de l'ouverture du modal
+$('#paymentOptionsModal').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget);
+    var id = button.data('id');
+    var nom = button.data('nom');
+    var prenom = button.data('prenom');
+    $('#professeurId').val(id);
+});
+
+// Fonction pour afficher l'image et le nom de l'opérateur de paiement
+$('#paymentModal').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget);
+    var mode = button.data('mode');
+    var imgSrc = button.data('img-src');
+    $('#paymentOperatorName').text(mode);
+    $('#paymentOperatorImage').attr('src', imgSrc);
+});
+
+// Fonction pour soumettre le formulaire de paiement
+function handlePaymentSubmit(event) {
+    event.preventDefault();
+    var isValid = validatePhoneNumber();
+    if (isValid) {
+        // Soumettre le formulaire de paiement ici (AJAX ou formulaire classique)
+        alert('Paiement confirmé pour le professeur ID: ' + $('#professeurId').val());
+        $('#paymentModal').modal('hide');
     }
+    return isValid;
+}
 
-    // Méthode pour gérer la validation du formulaire et l'affichage du modal de confirmation
-    handlePaymentSubmit(event) {
-        event.preventDefault();
-        if (!this.validateForm()) {
-            return;
-        }
-        this.confirmationModal.show();
-    }
-
-    // Méthode pour confirmer le paiement et afficher le bulletin
-    confirmPayment() {
-        const professeurId = document.getElementById('professeurId').value;
-        const nom = document.getElementById('nom').value;
-        const telephone = document.getElementById('telephone').value;
-
-        // Simuler le succès du paiement (vous pouvez remplacer par une requête AJAX)
-        console.log('Paiement confirmé pour:', professeurId, nom, telephone);
-
-        // Fermer les modals de paiement et de confirmation
-        this.paymentModal.hide();
-        this.confirmationModal.hide();
-
-        // Afficher le bulletin de salaire après confirmation
-        this.bulletinModal.show();
-    }
-
-    // Méthode pour valider le formulaire de paiement
-    validateForm() {
-        const nom = document.getElementById('nom').value;
-        const telephone = document.getElementById('telephone').value;
-        const phoneError = document.getElementById('phoneError');
-
-        phoneError.style.display = 'none';
-
-        if (nom.trim() === '') {
-            alert('Veuillez entrer votre nom.');
-            return false;
-        }
-
-        const phoneRegex = /^(77|76|75|78)\d{7}$/;
-        if (!phoneRegex.test(telephone)) {
-            phoneError.style.display = 'block';
-            return false;
-        }
+// Validation du numéro de téléphone
+function validatePhoneNumber() {
+    var phoneInput = $('#telephone');
+    var phoneValue = phoneInput.val();
+    var phonePattern = /^7[5-8][0-9]{7}$/;
+    if (!phonePattern.test(phoneValue)) {
+        $('#phoneError').show();
+        return false;
+    } else {
+        $('#phoneError').hide();
         return true;
     }
 }
-
-// Initialisation de la gestion des modals
-document.addEventListener('DOMContentLoaded', function () {
-    const modalManager = new ModalManager('paymentModal', 'confirmationModal', 'bulletinModal');
-
-    // Gérer la soumission du formulaire de paiement
-    document.getElementById('paymentForm').addEventListener('submit', (event) => {
-        modalManager.handlePaymentSubmit(event);
-    });
-
-    // Gérer la confirmation du paiement
-    document.getElementById('confirmPaymentButton').addEventListener('click', () => {
-        modalManager.confirmPayment();
-    });
-});
 
 
             </script>
                     </main>                  
                         <!-- partial -->
-                        <script src="/../script.js"></script>
+                        <script src="../script.js"></script>
                         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
                 </body>
             </html>
