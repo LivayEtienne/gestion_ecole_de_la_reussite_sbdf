@@ -14,7 +14,7 @@ $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 $offset = ($page - 1) * $entriesPerPage;
 
 // Construction de la requête SQL
-$sql = "SELECT nom, prenom, telephone, email, role, matricule FROM administrateur WHERE role IN ('surveillant_classe', 'surveillant_general')";
+$sql = "SELECT nom, prenom, telephone, email, role, matricule FROM administrateur WHERE role IN ('enseignant_primaire', 'enseignant_secondaire')";
 
 // Ajoutez les conditions de filtre
 if (!empty($roleFilter)) {
@@ -28,7 +28,7 @@ if (!empty($searchTerm)) {
 }
 
 // Récupération du nombre total d'entrées
-$countSql = "SELECT COUNT(*) FROM administrateur WHERE role IN ('surveillant_classe', 'surveillant_general')";
+$countSql = "SELECT COUNT(*) FROM administrateur WHERE role IN ('enseignant_primaire', 'enseignant_secondaire')";
 if (!empty($roleFilter)) {
     $countSql .= " AND role = :role";
 }
@@ -57,9 +57,7 @@ $totalPages = ceil($totalEntries / $entriesPerPage);
 // Ajout de la pagination à la requête principale
 $sql .= " LIMIT :offset, :entriesPerPage";
 
-// Préparation et exécution de la requête
 $stmt = $pdo->prepare($sql);
-
 if (!empty($roleFilter)) {
     $stmt->bindParam(':role', $roleFilter);
 }
@@ -76,9 +74,9 @@ $stmt->execute();
 $administrateurs = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 // Construction du titre
-$titre = "Liste des Surveillants";
+$titre = "Liste des Enseignants";
 if (!empty($roleFilter)) {
-    $titre .= " " . ($roleFilter === 'surveillant_classe' ? "Classe" : "General");
+    $titre .= " " . ($roleFilter === 'enseignant_primaire' ? "Primaires" : "Secondaires");
 }
 if ($archiveFilter !== '') {
     $titre .= $archiveFilter === '1' ? " Archivés" : " Non Archivés";
@@ -88,23 +86,22 @@ if ($archiveFilter !== '') {
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<title>Listes Surveillants</title>
-    <meta charset="utf-8" />
+<meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
-        <div class="container mt-4">
-            <form method="POST" action="surveillant-list.php">
+    <div class="container mt-4">
+        <form method="POST" action="enseignant-list.php">
             <div class="row mb-3">
                 <div class="col-md-4">
                     <label for="role">Rôle :</label>
                     <select name="role" id="role">
                         <option value="">Tous</option>
-                        <option value="surveillant_classe" <?= $roleFilter === 'surveillant_classe' ? 'selected' : '' ?>>surveillant de classe</option>
-                        <option value="surveillant_general" <?= $roleFilter === 'surveillant_general' ? 'selected' : '' ?>>surveillant general</option>
-                    </select>
+                        <option value="enseignant_primaire" <?= $roleFilter === 'enseignant_primaire' ? 'selected' : '' ?>>Enseignant Primaire</option>
+                        <option value="enseignant_secondaire" <?= $roleFilter === 'enseignant_secondaire' ? 'selected' : '' ?>>Enseignant Secondaire</option>
+                    </select><br>
                     <label for="archive">Archivés :</label>
                     <select name="archive" id="archive">
                         <option value="">Tous</option>
@@ -120,9 +117,11 @@ if ($archiveFilter !== '') {
                     <button type="submit" value="Filtrer" class="btn btn-danger">Recherche</button>
                 </div>
             </div>
-            </form>
-        </div>
+        </form>
+    </div>
     <h1 class="text-center mb-4"><?= htmlspecialchars($titre)?></h1>
+
+    <!-- Tableau d'affichage -->
     <div class="table-responsive">
         <table class="table table-bordered">
             <thead class="bg-primary text-white text-center">
@@ -157,12 +156,13 @@ if ($archiveFilter !== '') {
                 <?php endforeach; ?>
             <?php else: ?>
                 <tr>
-                    <td colspan="6">Aucun administrateur trouvé.</td>
+                    <td colspan="8">Aucun administrateur trouvé.</td>
                 </tr>
             <?php endif; ?>
             </tbody>
         </table>
     </div>
+
     <!-- Pagination -->
     <nav aria-label="Page navigation">
         <ul class="pagination justify-content-center">

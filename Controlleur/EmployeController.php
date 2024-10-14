@@ -3,7 +3,8 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-require_once '../database.php'; 
+require_once __DIR__ . '/../database.php';
+
 require_once '/opt/lampp/htdocs/gestion_ecole_sabadifa/Model/emplyeModel_archiver.php';
 
 class EmployeController {
@@ -37,8 +38,13 @@ class EmployeController {
             exit();
         }
 
-        // Générer un matricule
-        $matricule = $this->employeModel->genererMatricule($role);
+    // Vérifier si le numero de telephone existe déjà
+    if ($employeModel->verifierTelephoneExistant($telephone)) {
+        // Rediriger avec un message d'erreur
+        header("Location: ../View/Employe/employe-new/employe-new.html?error=1&message=Telephone déjà utilisé");
+        exit();
+    }
+    $matricule = $employeModel->genererMatricule($role);
 
         // Ajouter l'employé
         $this->employeModel->ajouterEmploye($nom, $prenom, $email, $telephone, $role, $salaire_fixe, $tarif_horaire, $mot_de_passe, $matricule);
@@ -48,4 +54,3 @@ class EmployeController {
         exit();
     }
 }
-require_once '/opt/lampp/htdocs/gestion_ecole_sabadifa/View/Employe/employe-list/enseignant-list/enseignant-list.php';
